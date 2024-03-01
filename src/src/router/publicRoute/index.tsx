@@ -1,13 +1,16 @@
 import { RouteObject } from 'react-router-dom';
-import Container from './container';
+import { ProductDetails } from '../../pages/product-details';
+import { AppLayout } from '../../components/appLayout';
 
 export const PublicRoutes: RouteObject = {
-	path: '/',
-	element: <Container />,
 	children: [
-		// {
-		// 	path: '/testing',
-		// 	element: <TestingPage />,
-		// },
+		{
+			path: '/',
+			element: <AppLayout />,
+		},
+		{
+			path: '/product-details/:productId',
+			element: <ProductDetails />,
+		},
 	]
 }

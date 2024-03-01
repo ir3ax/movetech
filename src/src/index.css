@@ -7,3 +7,15 @@ body *{
     font-family: 'Roboto mono', serif;
     letter-spacing: -1px;
 }
+
+/* Default styling for larger screens */
+.absolute.mobile-view {
+    display: none;
+}
+
+/* Styling for smaller screens (e.g., mobile devices) */
+@media only screen and (max-width: 767px) {
+    .absolute.mobile-view {
+        display: block;
+    }
+}
