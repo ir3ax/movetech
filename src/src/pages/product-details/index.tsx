@@ -54,21 +54,21 @@ export const ProductDetails = () => {
                             <span className='h-[2px] w-[80%] bg-slate-700 mt-4 border-b border-slate-700 max-sm:w-[100%] lg:w-[90%]' />
                             <div className='flex justify-center items-center w-full mt-12 text-2xl max-sm:mt-6 lg:mt-6'>
                                 <p className='flex flex-1 justify-start items-start text-[#A1133A] font-semibold line-through max-sm:justify-center lg:text-lg'>₱{productDetailsValue?.originalPrice}</p>
-                                <p className='flex flex-1 justify-start items-start text-[#DB1461] font-semibold max-sm:justify-center lg:text-lg'>₱{productDetailsValue?.discountedPrice}</p>
+                                <p className='flex flex-1 justify-start items-start text-[#F36000] font-semibold max-sm:justify-center lg:text-lg'>₱{productDetailsValue?.discountedPrice}</p>
                             </div>
                             <div className='max-sm:hidden mt-6 w-[60%] flex flex-col justify-start items-start gap-2 max-sm:w-[100%] max-sm:pl-12 max-sm:pr-12 max-sm:justify-center max-sm:items-center'>
                                 <span className='text-xl font-normal tracking-wide'>ONLY <span className='text-[#DB1461]'>{productDetailsValue?.currentQuantity}</span> LEFT</span>
                                 <div className='w-full bg-gray-200 rounded-sm h-3 dark:bg-gray-400'>
-                                    <div className='bg-[#615656] h-3 rounded-sm' style={progressBarStyle}></div>
+                                    <div className='bg-[#615656] h-3 rounded-sm' style={progressBarStyle} />
                                 </div>
                             </div>
                             <div className='max-sm:hidden flex justify-center items-center w-full mt-8 lg:gap-4'>
                                 <div className='flex justify-start items-start gap-1 w-[20%] max-sm:justify-center max-sm:w-[70%]'>
-                                    <button className='w-12 h-12 border bg-[#615656] max-sm:w-10 max-sm:h-10'>
+                                    <button className='w-12 h-12 rounded-sm border bg-[#615656] max-sm:w-10 max-sm:h-10'>
                                         <span className='text-3xl text-white lg:text-lg'>-</span>
                                     </button>
                                     <input value={1} className='w-10 h-12 border-t border-b text-center max-sm:w-8 max-sm:h-10' />
-                                    <button className='w-12 h-12 border bg-[#615656] max-sm:w-10 max-sm:h-10'>
+                                    <button className='w-12 h-12 rounded-sm border bg-[#615656] max-sm:w-10 max-sm:h-10'>
                                         <span className='text-3xl text-white lg:text-lg'>+</span>
                                     </button>
                                 </div>
@@ -102,11 +102,11 @@ export const ProductDetails = () => {
                             </div>
                             <div className='flex justify-center items-center w-full mt-4'>
                                 <div className='flex justify-start items-start gap-1 w-[20%] max-sm:justify-center max-sm:w-[70%]'>
-                                    <button className='w-12 h-12 border bg-[#615656] max-sm:w-10 max-sm:h-10'>
+                                    <button className='w-12 h-12 border rounded-sm bg-[#615656] max-sm:w-10 max-sm:h-10'>
                                         <span className='text-3xl text-white'>-</span>
                                     </button>
                                     <input value={1} className='w-10 h-12 border-t border-b text-center max-sm:w-8 max-sm:h-10' />
-                                    <button className='w-12 h-12 border bg-[#615656] max-sm:w-10 max-sm:h-10'>
+                                    <button className='w-12 h-12 border rounded-sm bg-[#615656] max-sm:w-10 max-sm:h-10'>
                                         <span className='text-3xl text-white'>+</span>
                                     </button>
                                 </div>

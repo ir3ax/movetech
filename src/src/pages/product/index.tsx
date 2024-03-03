@@ -35,6 +35,7 @@ export const ProductPage: React.FC<ProductProps> = ({ productId, img, imgName, d
             currentQuantity: currentQuantity
         })
         navigate(`/product-details/${productId}`);
+        window.scrollTo(0, 0);
     }
 
     return (
@@ -59,10 +60,10 @@ export const ProductPage: React.FC<ProductProps> = ({ productId, img, imgName, d
                     </div>
                     <div className='mt-4 ml-1 flex justify-start items-start text-xl font-bold lg:text-lg'>
                         <div className='flex flex-1 justify-start items-start text-[#A1133A] line-through'>
-                            ₱ {originalPrice}
+                            ₱{originalPrice}
                         </div>
-                        <div className='flex flex-1 justify-end items-end text-[#DB1461]'>
-                            ₱ {discountedPrice}
+                        <div className='flex flex-1 justify-end items-end text-[#F36000]'>
+                            ₱{discountedPrice}
                         </div>
                     </div>
                 </div>

@@ -14,10 +14,10 @@ export const TopBar = () => {
                         <img className='w-[28%] max-sm:w-[70%]' src={moveTechLogo} alt='MoveTech Logo' />
                     </button>
                 </div>
-                <div className='flex flex-1 justify-end items-end cursor-pointer relative'>
+                <button onClick={() => navigate('/cart')} className='flex flex-1 justify-end items-end cursor-pointer relative'>
                     <span className='absolute w-5 h-5 rounded-full bg-red-600 text-sm flex justify-center items-center -top-2 -right-4 text-white p-1'>1</span>
                     <img className='w-8 h-8 max-sm:w-6 max-sm:h-6' src={basket} alt='basket' />
-                </div>
+                </button>
             </div>
         </nav>
     )
