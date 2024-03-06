@@ -156,63 +156,75 @@ const CheckOut = () => {
                                     <img className='w-24 h-24' src={productDetailsValue?.img} alt={productDetailsValue?.imgName} />
                                     <div className='flex flex-col gap-3'>
                                         <p>{productDetailsValue?.imgName}</p>
-                                        <StarRatings
-                                            rating={productDetailsValue?.rating}
-                                            starRatedColor="#FCD53F"
-                                            numberOfStars={5}
-                                            name='rating'
-                                            starDimension='18px'
-                                        />
+                                        <div className='flex justify-start items-start w-full h-full gap-2'>
+                                            <StarRatings
+                                                rating={1}
+                                                starRatedColor="#FCD53F"
+                                                numberOfStars={1}
+                                                name='rating'
+                                                starDimension='16px'
+                                            />
+                                            <div className='text-gray-400 text-sm mt-1'>{productDetailsValue?.rating} ratings |</div>
+                                            <div className='text-gray-400 text-sm mt-1'>123 sold</div>
+                                        </div>
                                     </div>
                                     <div className='ml-8 flex justify-center items-center max-sm:ml-0'>
-                                        <p>₱{productDetailsValue?.discountedPrice}</p>
+                                        <p className='text-[#F36000]'>₱{productDetailsValue?.discountedPrice}</p>
                                     </div>
                                 </div>
                                 <div className='p-4 flex gap-12 border-b max-sm:flex-col max-sm:gap-4 max-sm:justify-center max-sm:items-center max-sm:text-center max-sm:text-sm'>
                                     <img className='w-24 h-24' src={productDetailsValue?.img} alt={productDetailsValue?.imgName} />
                                     <div className='flex flex-col gap-3'>
                                         <p>{productDetailsValue?.imgName}</p>
-                                        <StarRatings
-                                            rating={productDetailsValue?.rating}
-                                            starRatedColor="#FCD53F"
-                                            numberOfStars={5}
-                                            name='rating'
-                                            starDimension='18px'
-                                        />
+                                        <div className='flex justify-start items-start w-full h-full gap-2'>
+                                            <StarRatings
+                                                rating={1}
+                                                starRatedColor="#FCD53F"
+                                                numberOfStars={1}
+                                                name='rating'
+                                                starDimension='16px'
+                                            />
+                                            <div className='text-gray-400 text-sm mt-1'>{productDetailsValue?.rating} ratings |</div>
+                                            <div className='text-gray-400 text-sm mt-1'>123 sold</div>
+                                        </div>
                                     </div>
                                     <div className='ml-8 flex justify-center items-center max-sm:ml-0'>
-                                        <p>₱{productDetailsValue?.discountedPrice}</p>
+                                        <p className='text-[#F36000]'>₱{productDetailsValue?.discountedPrice}</p>
                                     </div>
                                 </div>
                                 <div className='p-4 flex gap-12 border-b max-sm:flex-col max-sm:gap-4 max-sm:justify-center max-sm:items-center max-sm:text-center max-sm:text-sm'>
                                     <img className='w-24 h-24' src={productDetailsValue?.img} alt={productDetailsValue?.imgName} />
                                     <div className='flex flex-col gap-3'>
                                         <p>{productDetailsValue?.imgName}</p>
-                                        <StarRatings
-                                            rating={productDetailsValue?.rating}
-                                            starRatedColor="#FCD53F"
-                                            numberOfStars={5}
-                                            name='rating'
-                                            starDimension='18px'
-                                        />
+                                        <div className='flex justify-start items-start w-full h-full gap-2'>
+                                            <StarRatings
+                                                rating={1}
+                                                starRatedColor="#FCD53F"
+                                                numberOfStars={1}
+                                                name='rating'
+                                                starDimension='16px'
+                                            />
+                                            <div className='text-gray-400 text-sm mt-1'>{productDetailsValue?.rating} ratings |</div>
+                                            <div className='text-gray-400 text-sm mt-1'>123 sold</div>
+                                        </div>
                                     </div>
                                     <div className='ml-8 flex justify-center items-center max-sm:ml-0'>
-                                        <p>₱{productDetailsValue?.discountedPrice}</p>
+                                        <p className='text-[#F36000]'>₱{productDetailsValue?.discountedPrice}</p>
                                     </div>
                                 </div>
                            </div>
                            <div className='mt-12 flex flex-col justify-start items-start max-sm:w-full pr-12 pl-12 gap-4 text-xl max-sm:pb-12 max-sm:pr-2 max-sm:pl-2 max-sm:text-sm max-sm:justify-center max-sm:items-center'>
                                 <div className='w-full flex justify-center items-center'>
                                     <p className='flex flex-1 justify-start items-start font-semibold'>Subtotal</p>
-                                    <p className='flex flex-1 justify-center items-center'>₱{productDetailsValue?.discountedPrice}</p>
+                                    <p className='flex flex-1 justify-center items-center '>₱{productDetailsValue?.discountedPrice}</p>
                                 </div>
                                 <div className='w-full flex justify-center items-center'>
                                     <p className='flex flex-1 justify-start items-start font-semibold'>Shipping Fee</p>
                                     <p className='flex flex-1 justify-center items-center'>FREE</p>
                                 </div>
-                                <div className='w-full flex justify-center items-center'>
-                                    <p className='flex flex-1 justify-start items-start font-semibold'>Total</p>
-                                    <p className='flex flex-1 justify-center items-center'>₱{productDetailsValue?.discountedPrice}</p>
+                                <div className='w-full flex justify-center items-center text-3xl mt-4 max-sm:text-[20px]'>
+                                    <p className='flex flex-1 justify-start items-start font-semibold '>Total</p>
+                                    <p className='flex flex-1 justify-center items-center font-semibold max-sm:font-normal'>₱{productDetailsValue?.discountedPrice}</p>
                                 </div>
                            </div>
                     </div>

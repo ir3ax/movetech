@@ -1,12 +1,14 @@
 export type FetchProductDetails = {
-    productId: number;
+    productId: string;
     img: string;
     imgName: string;
     discount: string;
-    rating: number;
     originalPrice: number;
     discountedPrice: number;
-    description: unknown;
+    description1: unknown;
+    description2: unknown;
     originalQuantity:number;
     currentQuantity:number;
+    productStatus:string;
+    productRating: number;
 }  

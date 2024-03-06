@@ -1,46 +1,59 @@
+import StarRatings from "react-star-ratings";
 import Footer from "../../components/appLayout/footer"
 import { TopBar } from "../../components/appLayout/topbar"
 import { TableBody, TableCell, TableRow } from "../../components/ui/table";
 import { FetchCartDetails } from "../../service/cart/schema";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
+import { useAtom } from "jotai";
+import { cartDetailsAtom } from "../../atom/cartDetailsAtom";
 
 export const Cart = () => {
+
+    const navigate = useNavigate();
+    const [cartDetails, setCartDetails] = useAtom(cartDetailsAtom);
+    console.log('cart-details',cartDetails);
 
     // Sample data
 const cartDetailsValue: FetchCartDetails = {
     products: [
       {
-        productId: 1,
+        productId: "123e4567-e89b-12d3-a456-426655440001",
         productName: "[Baak] Ticarto T-2648G Stainless Couple Watch",
         productImg: "https://yelsewph.business/cdn/shop/products/new_couple_540x.jpg?v=1560926945",
         discount:"70% OFF",
+        rating:5,
         quantity: 2,
         price: 20.00,
         total: 40.00
       },
       {
-        productId: 2,
+        productId: "123e4567-e89b-12d3-a456-426655440002",
         productName: "Shard Brand Luxury Couple watch Free Couple Ring",
         productImg: "https://yelsewph.business/cdn/shop/products/NEW_CP_WATCH_540x.jpg?v=1555255601",
         discount:"50% OFF",
+        rating:4.8,
         quantity: 1,
         price: 15.00,
         total: 15.00
       },
       {
-        productId: 3,
+        productId: "123e4567-e89b-12d3-a456-426655440003",
         productName: "FNGEEN Mechanical Luminous Automatic watch Green",
         productImg: "https://yelsewph.business/cdn/shop/products/authentic_fngeen_540x.jpg?v=1548169228",
         discount:"65% OFF",
+        rating:4.6,
         quantity: 3,
         price: 10.00,
-        total: 30.00
+        total: 30.00,
       },
     ],
     grandTotal: 85.00
   };
 
-  console.log(cartDetailsValue)
+  const handleCheckout = () => {
+    navigate('/checkout')
+  }
 
 return(
     <div className='w-full h-full'>
@@ -48,7 +61,7 @@ return(
             <TopBar />
         </div>
         <div className='flex flex-col w-full min-h-[90dvh] bg-[#F4F4F4] 2xl:p-24 lg:p-12 text-[#1D1D1D] max-sm:p-2'>
-            <div className='w-full h-full text-3xl font-medium tracking-wide'>YOUR CART</div>
+            <div className='w-full h-full text-3xl font-normal tracking-wide'>Your Cart</div>
             <span className='w-[100%]  mt-4 border-b border-black max-sm:w-[100%] lg:w-[100%]' />
             <div className='flex justify-center items-center gap-8 mt-4 max-sm:flex-col max-sm:pb-12'>
                 <div className='flex flex-col w-[60%] min-h-[50dvh] max-h-[60vh] overflow-auto max-sm:w-[90%]'>
@@ -67,9 +80,17 @@ return(
                                     <div>
                                         {index.productName}
                                     </div>
-                                    <div className='text-md text-gray-400'>
-                                        {index.discount}
-                                    </div>
+                                    <div className='flex justify-center items-center w-full h-full gap-2'>
+                                    <StarRatings
+                                        rating={1}
+                                        starRatedColor="#FCD53F"
+                                        numberOfStars={1}
+                                        name='rating'
+                                        starDimension='16px'
+                                    />
+                                    <div className='text-gray-400 text-sm mt-1'>{index.rating} ratings |</div>
+                                    <div className='text-gray-400 text-sm mt-1'>123 sold</div>
+                                </div>
                                 </div>
                             </TableCell> 
                             <TableCell className='w-[50%] max-sm:w-[100%]'>
@@ -77,9 +98,14 @@ return(
                                     <div className='text-lg text-[#F36000] font-semibold tracking-wide'>
                                         ₱{index.price}
                                     </div>
-                                    <button className='text-sm text-gray-400 cursor-pointer'>
-                                        <RiDeleteBin6Line className='w-6 h-6' />
-                                    </button>
+                                    <div className='flex justify-center items-center gap-3'>
+                                        <div className='text-sm text-gray-400'>
+                                            {index.discount}
+                                        </div>
+                                        <button className='text-sm text-gray-400 cursor-pointer'>
+                                            <RiDeleteBin6Line className='w-6 h-6' />
+                                        </button>
+                                    </div>
                                 </div>
                             </TableCell>
                             <TableCell className='w-[100%] flex justify-center items-center'>
@@ -120,7 +146,7 @@ return(
                             </div>
                         </div>
                         <div className='flex justify-start items-start w-full mt-12'>
-                            <button className='w-[80%] text-2xl font-normal text-white bg-[#615656] p-2 rounded-sm tracking-widest hover:animate-bounce max-sm:pl-6 max-sm:pr-6 max-sm:text-lg lg:w-[100%] lg:text-xl max-sm:text-[16px] max-sm:w-[100%]'>PROCEED TO CHECKOUT</button>
+                            <button onClick={() => handleCheckout()} className='w-[80%] text-2xl font-normal text-white bg-[#615656] p-2 rounded-sm tracking-widest hover:animate-bounce max-sm:pl-6 max-sm:pr-6 max-sm:text-lg lg:w-[100%] lg:text-xl max-sm:text-[16px] max-sm:w-[100%]'>PROCEED TO CHECKOUT</button>
                         </div>
                     </div>
                 </div>

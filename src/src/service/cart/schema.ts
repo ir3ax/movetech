@@ -4,11 +4,12 @@ export type FetchCartDetails = {
   };
   
   export type CartProduct = {
-    productId: number;
-    productName: string;
-    productImg: string;
-    discount: string;
-    quantity: number;
-    price: number;
-    total: number;
+    productId: string | undefined;
+    productName: string | undefined;
+    productImg: string | undefined;
+    discount: string | undefined;
+    rating: number | undefined;
+    quantity: number | undefined;
+    price: number | undefined;
+    total: number | undefined;
   };
