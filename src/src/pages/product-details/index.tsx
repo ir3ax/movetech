@@ -1,4 +1,4 @@
-import { useAtom, useAtomValue } from "jotai"
+import { useAtom } from "jotai"
 import { productDetailsAtom } from "../../atom/productDetailsAtom"
 import { TopBar } from "../../components/appLayout/topbar";
 import Footer from "../../components/appLayout/footer";
@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 export const ProductDetails = () => {
 
-    const productDetailsValue = useAtomValue(productDetailsAtom);
+    const [productDetailsValue, ] = useAtom(productDetailsAtom);
     const [cartDetails, setCartDetails] = useAtom(cartDetailsAtom);
     const [ stateQuantity, setStateQuantity ] = useState<number>(1);
     const navigate = useNavigate();
@@ -33,7 +33,7 @@ export const ProductDetails = () => {
           {
             productId: productDetailsValue?.productId,
             productName: productDetailsValue?.imgName,
-            productImg: productDetailsValue?.img,
+            productImg: productDetailsValue?.img[0],
             discount: productDetailsValue?.discount,
             rating: productDetailsValue?.productRating,
             productSold: productDetailsValue?.productSold,
@@ -67,8 +67,16 @@ export const ProductDetails = () => {
       const onMinus = () => {
         setStateQuantity(stateQuantity - 1);
       }
-      
-      
+
+      const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+      const handleImageSwap = (index: number) => {
+        const imgArray = productDetailsValue?.img ?? [];
+        if (index < imgArray.length) {
+          setCurrentImageIndex(index);
+        }
+      };
+    
     return (
         <div className='w-full h-full'>
             <div className='sticky top-0 z-50 drop-shadow-md shadow-black bg-[#f3efef]'>
@@ -76,21 +84,21 @@ export const ProductDetails = () => {
             </div>
             <div className='mt-12 bg-white relative pb-12'>
                 <div className='flex justify-center items-center gap-8 max-sm:flex-col'>
-                    <div className='flex flex-1 justify-end items-end gap-4 max-sm:flex-col-reverse max-sm:mr-12 max-sm:ml-12 max-sm:justify-center max-sm:items-center'>
+                    <div className='flex flex-1 justify-end items-end gap-4 max-sm:flex-col-reverse max-sm:mr-12 max-sm:ml-12 max-sm:justify-center max-sm:items-center'>  
                         <div className='flex flex-col flex-1 justify-end items-end gap-4 w-full h-[80dvh] max-sm:flex-row'>
-                                <button className='max-sm:w-28 max-sm:h-28 flex justify-center items-center w-32 h-32 border rounded-md p-2 hover:border-[#1796CC] active:border-[#1796CC] focus:active:border-[#1796CC]'>
-                                    <img className='w-24 h-24 max-sm:w-20 max-sm:h-20' src={productDetailsValue?.img} alt={productDetailsValue?.imgName} />
+                            {(Array.isArray(productDetailsValue?.img) ? productDetailsValue.img : [productDetailsValue?.img]).map((image, index) => (
+                                <button
+                                    key={index}
+                                    className={`max-sm:w-28 max-sm:h-28 flex justify-center items-center w-32 h-32 border rounded-md p-2 hover:border-[#1796CC] active:border-[#1796CC] focus:active:border-[#1796CC] ${index >= (productDetailsValue?.currentQuantity || 0) ? 'hidden' : ''}`}
+                                    onClick={() => handleImageSwap(index)}
+                                >
+                                    <img className='w-24 h-24 max-sm:w-20 max-sm:h-20' src={image} alt={productDetailsValue?.imgName} />
                                 </button>
-                                <button className='max-sm:w-28 max-sm:h-28 flex justify-center items-center w-32 h-32 border rounded-md p-2 hover:border-[#1796CC] active:border-[#1796CC] focus:active:border-[#1796CC]'>
-                                    <img className='w-24 h-24 max-sm:w-20 max-sm:h-20' src={productDetailsValue?.img} alt={productDetailsValue?.imgName} />
-                                </button>
-                                <button className='max-sm:w-28 max-sm:h-28 flex justify-center items-center w-32 h-32 border rounded-md p-2 hover:border-[#1796CC] active:border-[#1796CC] focus:active:border-[#1796CC]'>
-                                    <img className='w-24 h-24 max-sm:w-20 max-sm:h-20' src={productDetailsValue?.img} alt={productDetailsValue?.imgName} />
-                                </button>
+                            ))}
                         </div>
                         <div className='flex flex-1 justify-center items-center w-full h-[80dvh] p-16 border rounded-md max-sm:p-6'>
-                            <img src={productDetailsValue?.img} alt={productDetailsValue?.imgName} />
-                        </div>
+                            <img src={productDetailsValue?.img?.[currentImageIndex]} alt={productDetailsValue?.imgName} />
+                        </div>            
                     </div>
                     <div className='flex flex-1 justify-start items-start max-sm:justify-center max-sm:items-center'>
                         <div className='flex flex-col justify-start items-start w-full h-[80dvh] max-h-[85dvh] overflow-y-auto'>

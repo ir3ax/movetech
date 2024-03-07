@@ -5,6 +5,7 @@ import { Cart } from '../../pages/cart';
 import TermsOfService from '../../pages/termsofservice';
 import PrivacyPolicy from '../../pages/privacypolicy';
 import CheckOut from '../../pages/checkout';
+import { Success } from '../../pages/success';
 
 export const PublicRoutes: RouteObject = {
 	children: [
@@ -31,6 +32,10 @@ export const PublicRoutes: RouteObject = {
 		{
 			path: '/checkout',
 			element: <CheckOut />
+		},
+		{
+			path: '/success',
+			element: <Success />
 		},
 	]
 }

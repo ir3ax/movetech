@@ -3,9 +3,15 @@ import { TopBar } from "./topbar";
 import { SlideShow } from "../../pages/slideShow";
 import { ProductPage } from "../../pages/product";
 import Footer from "./footer";
+import { useAtom } from "jotai";
+import { completeCheckOut } from "../../atom/checkOutAtom";
 
 
 export const AppLayout = () => {
+
+    const [completeCheckOutAtomValue,] = useAtom(completeCheckOut);
+
+    console.log('checkoutcoplete', completeCheckOutAtomValue)
 
     const productReview = [
         {
@@ -63,7 +69,10 @@ export const AppLayout = () => {
         {
             "productId":"123e4567-e89b-12d3-a456-426655440001",
             "imgName":"[Baak] Ticarto T-2648G Stainless Couple Watch",
-            "img":"https://yelsewph.business/cdn/shop/products/new_couple_540x.jpg?v=1560926945",
+            "img":[
+                "https://yelsewph.business/cdn/shop/products/new_couple_540x.jpg?v=1560926945",
+                "https://yelsewph.business/cdn/shop/products/ticarto_black_copy_540x.jpg?v=1560926945",
+            ],
             "discount":"77% OFF",
             "originalPrice": 1999,
             "discountedPrice": 459.77,
@@ -117,7 +126,11 @@ export const AppLayout = () => {
         {
             "productId":"123e4567-e89b-12d3-a456-426655440003",
             "imgName":"FNGEEN Mechanical Luminous Automatic watch Blue",
-            "img":"https://yelsewph.business/cdn/shop/products/authentic_fngeen_blue_540x.jpg?v=1547268460",
+            "img":[
+                "https://yelsewph.business/cdn/shop/products/authentic_fngeen_blue_540x.jpg?v=1547268460",
+                "https://yelsewph.business/cdn/shop/products/FNGEEN_1_540x.jpg?v=1547268460",
+                "https://yelsewph.business/cdn/shop/products/fngeen_lumin_b33ae41d-ed34-4eff-87c8-62d941ad7061_540x.jpg?v=1548169291"
+            ],
             "discount":"45% OFF",
             "originalPrice": 1499,
             "discountedPrice": 824.45,
@@ -143,8 +156,12 @@ export const AppLayout = () => {
         },
         {
             "productId":"123e4567-e89b-12d3-a456-426655440004",
-            "imgName":"OPK Wrist Watch for Men With Box Water proof Original Quartz Calendar Stainless Steel Strap 8108",
-            "img":"https://cf.shopee.ph/file/1ed3b1dbd5777c9453541ecd41983a5b",
+            "imgName":"OPK Wrist Watch for Men Stainless Steel Strap 8108",
+            "img":[
+                "https://cf.shopee.ph/file/1ed3b1dbd5777c9453541ecd41983a5b",
+                "https://down-ph.img.susercontent.com/file/cn-11134207-7r98o-lp8retfdp61je4",
+                "https://down-ph.img.susercontent.com/file/cn-11134207-7qukw-lj18wieh8qre8a",
+            ],
             "discount":"90% OFF",
             "originalPrice": 3000,
             "discountedPrice": 300,
@@ -252,7 +269,7 @@ export const AppLayout = () => {
                                     <ProductPage
                                         productId={product.productId}
                                         imgName={product.imgName}
-                                        img={product.img}
+                                        img={Array.isArray(product.img) ? product.img : [product.img]}
                                         discount={product.discount}
                                         originalPrice={product.originalPrice}
                                         discountedPrice={product.discountedPrice}

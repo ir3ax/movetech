@@ -23,6 +23,11 @@ export const TopBar = () => {
           return isQuantityDefined(product) ? acc + product.quantity : acc;
         }, 0) || 0;
       }, [cartDetails]);
+
+      const handleNavigateToCart = () => {
+        navigate('/cart');
+        window.scrollTo(0, 0);
+      }
     
     return (
         <nav className='w-full h-full top-0 z-10 pt-4 pb-4 pl-36 pr-36 max-sm:pr-6 max-sm:pl-6'>
@@ -32,7 +37,7 @@ export const TopBar = () => {
                         <img className='w-[28%] max-sm:w-[70%]' src={moveTechLogo} alt='MoveTech Logo' />
                     </button>
                 </div>
-                <button onClick={() => navigate('/cart')} className='flex flex-1 justify-end items-end cursor-pointer relative'>
+                <button onClick={handleNavigateToCart} className='flex flex-1 justify-end items-end cursor-pointer relative'>
                     {
                         totalQuantity <= 0 ?
                         null

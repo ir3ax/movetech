@@ -11,7 +11,7 @@ interface Review {
 }
 interface ProductProps {
     productId: string;
-    img: string,
+    img: string | string[];
     imgName: string;
     discount: string;
     originalPrice: number;
@@ -67,7 +67,7 @@ export const ProductPage: React.FC<ProductProps> = ({ productId, img, imgName, d
                     {discount}
                 </span>
                 <div className='pb-12 flex justify-center items-center '>
-                    <img className='w-52 h-52' src={img} alt={imgName}/>
+                    <img className='w-52 h-52' src={img[0]} alt={imgName}/>
                 </div>
                 <span className='line-clamp-2'>{imgName}</span>
                 <div className='mt-6 w-full h-full flex flex-col'>
@@ -79,7 +79,7 @@ export const ProductPage: React.FC<ProductProps> = ({ productId, img, imgName, d
                             name='rating'
                             starDimension='24px'
                         />
-                        <div className='flex justify-start items-start w-full h-full gap-2'>
+                        <div className='flex justify-start items-start w-full h-full gap-2 max-sm:justify-center max-sm:items-center'>
                             <div className='text-gray-400 text-sm'>{averageRating} ratings |</div>
                             <div className='text-gray-400 text-sm'>{productSold} sold</div>
                         </div>

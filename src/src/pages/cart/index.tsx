@@ -112,21 +112,23 @@ const onAdd = (productId: string | undefined) => {
     setCheckOutAtomValue(selectedProducts || []);
   }, [isChecked, cartDetails?.products, setCheckOutAtomValue]);
 
+
 return(
     <div className='w-full h-full'>
        <div className='sticky top-0 z-50 drop-shadow-md shadow-black bg-[#f3efef]'>
             <TopBar />
         </div>
-        {
-            cartDetails?.products && cartDetails.products.length < 1 ?
-            <div className='min-h-[90dvh] flex justify-center items-center'>
+          {
+            (cartDetails?.products && cartDetails.products.length < 1) || (!cartDetails?.products || cartDetails.products.length === undefined) ? (
+              <div className='min-h-[90dvh] flex justify-center items-center'>
                 <div className='flex flex-col justify-center items-center gap-6 max-sm:p-10'>
-                    <img className='w-[10%] h-[10%] max-sm:w-[40%] max-sm:h-[40%]' src={EmptyCart}  alt='Empty Cart Logo'/>
-                    <h1 className='font-semibold text-xl max-sm:text-lg'>Your Cart is <span className='text-[#FF1211]'>Empty!</span></h1>
-                    <p className='text-md max-sm:text-center max-sm:text-sm'>Must add items on the cart before you proceed to check out.</p>
-                    <Link className='text-2xl font-normal text-white bg-[#615656] p-2 rounded-md pl-24 pr-24 tracking-normal hover:animate-bounce max-sm:pl-6 max-sm:pr-6 max-sm:text-lg lg:pr-12 lg:pl-12' to={'/#product-section'}>Continue Shopping</Link>
+                  <img className='w-[10%] h-[10%] max-sm:w-[40%] max-sm:h-[40%]' src={EmptyCart} alt='Empty Cart Logo' />
+                  <h1 className='font-semibold text-xl max-sm:text-lg'>Your Cart is <span className='text-[#FF1211]'>Empty!</span></h1>
+                  <p className='text-md max-sm:text-center max-sm:text-sm'>Must add items to the cart before you proceed to check out.</p>
+                  <Link className='text-2xl font-normal text-white bg-[#615656] p-2 rounded-md pl-24 pr-24 tracking-normal hover:animate-bounce max-sm:pl-6 max-sm:pr-6 max-sm:text-lg lg:pr-12 lg:pl-12' to={'/'}>Continue Shopping</Link>
                 </div>
-            </div>
+              </div>
+            )
             :
             <div className='flex flex-col w-full min-h-[90dvh] bg-[#F4F4F4] 2xl:p-24 lg:p-12 text-[#1D1D1D] max-sm:p-2'>
             <div className='w-full h-full text-3xl font-normal tracking-wide'>Your Cart</div>
@@ -137,7 +139,7 @@ return(
                 {cartDetails?.products?.map((index, key) => (
                     <TableBody key={key} className='h-full text-center w-full mt-6 bg-white'>  
                         <TableRow className='flex max-sm:flex-col'> 
-                            <TableCell className='w-[30%] flex justify-center items-center'>
+                            <TableCell className='w-[30%] flex justify-center items-center max-sm:justify-start'>
                             <input
                                 className='w-6 h-6 accent-[#615656]'
                                 type="checkbox"

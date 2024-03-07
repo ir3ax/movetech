@@ -1,6 +1,6 @@
 export type FetchProductDetails = {
     productId: string;
-    img: string;
+    img: string | string[];
     imgName: string;
     discount: string;
     originalPrice: number;

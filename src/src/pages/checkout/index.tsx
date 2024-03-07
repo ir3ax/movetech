@@ -4,9 +4,11 @@ import Footer from '../../components/appLayout/footer';
 import { TopBar } from '../../components/appLayout/topbar';
 import { Input } from '../../components/input';
 import { places } from '../../utility/places';
-import { useAtom } from 'jotai';
+import { SetStateAction, useAtom } from 'jotai';
 import StarRatings from 'react-star-ratings';
-import { checkOutAtom } from '../../atom/checkOutAtom';
+import { checkOutAtom, completeCheckOut } from '../../atom/checkOutAtom';
+import { CompleteCheckOut, CompleteProductInfo } from '../../service/checkout/schema';
+import { useNavigate } from 'react-router-dom';
 
 const CheckOut = () => {
 
@@ -15,9 +17,82 @@ const CheckOut = () => {
     const [selectedCity, setSelectedCity] = useState<string>('');
     const [selectedBarangay, setSelectedBarangay] = useState<string>('');
     const [checkOutAtomValue, ] = useAtom(checkOutAtom);
+    const [, setCompleteCheckOutAtomValue] = useAtom(completeCheckOut);
+    const navigate = useNavigate();
+
+    //Testing useState for address.
+    const [mobileNumber, setMobileNumber] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [emailAddress, setEmailAddress] = useState('');
+    const [landmark, setLandmark] = useState('');
+    const [address, setAddress] = useState('');
+    const [apartment, setApartment] = useState('');
+
+    const handleMobileNumberChange = (e: { target: { value: SetStateAction<string>; }; }) => {
+        setMobileNumber(e.target.value);
+    };
+
+    const handleFirstNameChange = (e: { target: { value: SetStateAction<string>; }; }) => {
+        setFirstName(e.target.value);
+    };
+
+    const handleLastNameChange = (e: { target: { value: SetStateAction<string>; }; }) => {
+        setLastName(e.target.value);
+    };
+
+    const handleEmailAddressChange = (e: { target: { value: SetStateAction<string>; }; }) => {
+        setEmailAddress(e.target.value);
+    };
+
+    const handleLandmarkChange = (e: { target: { value: SetStateAction<string>; }; }) => {
+        setLandmark(e.target.value);
+    };
+
+    const handleAddressChange = (e: { target: { value: SetStateAction<string>; }; }) => {
+        setAddress(e.target.value);
+    };
+
+    const handleApartmentChange = (e: { target: { value: SetStateAction<string>; }; }) => {
+        setApartment(e.target.value);
+    };
 
     const total = checkOutAtomValue.reduce((acc, product) => acc + (product.total || 0), 0);
-  
+
+    const handleCompleteOrder = () => {
+        // Assuming checkOutAtomValue is an array of products with productId and quantity
+        const productsInfo: CompleteProductInfo[] = checkOutAtomValue.map((product) => ({
+            productId: product.productId,
+            quantity: product.quantity,
+        }));
+    
+        const newCompleteCheckOut: CompleteCheckOut = {
+            product: productsInfo,
+            total: total,
+            contactNumber: mobileNumber,
+            firstName: firstName,
+            lastName: lastName,
+            emailAddress: emailAddress,
+            completeAddress: [
+                {
+                    landmark: landmark,
+                    address: address,
+                    houseNumber: apartment,
+                    region: selectedRegion,
+                    province: selectedProvince,
+                    city: selectedCity,
+                    barangay: selectedBarangay,
+                },
+            ],
+        };
+    
+        // Update the completeCheckOut atom
+        setCompleteCheckOutAtomValue((prevCompleteCheckOut) => [...prevCompleteCheckOut, newCompleteCheckOut]);
+    
+        navigate('/success');
+        localStorage.clear();
+    };
+    
 	return (
 		<div className='w-full h-full'>
 			<div className='sticky top-0 z-50 drop-shadow-md shadow-black bg-[#f3efef]'>
@@ -28,16 +103,16 @@ const CheckOut = () => {
                     <div className='flex flex-col flex-1 justify-end items-end w-full min-h-[80dvh]'>
                         <form className='flex justify-end items-end w-[50%] flex-col gap-4 max-sm:w-full max-sm:pr-12 max-sm:pl-12'>
                             <span className='text-2xl w-full flex justify-start items-start'>Contact</span>
-                            <Input placeholder='Mobile #' className='w-full ' />
+                            <Input onChange={handleMobileNumberChange} value={mobileNumber} placeholder='Mobile #' className='w-full ' />
                             <span className='mt-4 text-2xl w-full flex justify-start items-start'>Delivery</span>
                             <div className='w-full flex justify-center items-center gap-4'>
-                                <Input placeholder='First Name' className='w-full flex-1' />
-                                <Input placeholder='Last Name' className='w-full flex-1' />
+                                <Input onChange={handleFirstNameChange} value={firstName} placeholder='First Name' className='w-full flex-1' />
+                                <Input onChange={handleLastNameChange} value={lastName} placeholder='Last Name' className='w-full flex-1' />
                             </div>
-                            <Input placeholder='Email Address' className='w-full ' />
-                            <Input placeholder='Landmark to locate you easily' className='w-full ' />
-                            <Input placeholder='Address' className='w-full ' />
-                            <Input placeholder='Apartment, suite, etc.' className='w-full ' />
+                            <Input onChange={handleEmailAddressChange} value={emailAddress} placeholder='Email Address' className='w-full ' />
+                            <Input onChange={handleLandmarkChange} value={landmark} placeholder='Landmark to locate you easily' className='w-full ' />
+                            <Input onChange={handleAddressChange} value={address} placeholder='Address' className='w-full ' />
+                            <Input onChange={handleApartmentChange} value={apartment} placeholder='Apartment, suite, etc.' className='w-full ' />
                             
                             <div className='flex justify-center items-center w-full gap-3'>
                                 {/* Region Dropdown */}
@@ -148,7 +223,7 @@ const CheckOut = () => {
                            </div>
                         </div>
                         <div className='mt-8 flex justify-start items-start w-[50%] max-sm:w-full max-sm:pr-12 max-sm:pl-12 max-sm:mt-12'>
-                            <button className='w-full text-lg font-normal text-white bg-[#615656] p-4 rounded-md pl-16 pr-16 tracking-widest hover:animate-bounce max-sm:pl-6 max-sm:pr-6 max-sm:text-lg'>COMPLETE ORDER</button>
+                            <button onClick={handleCompleteOrder} className='w-full text-lg font-normal text-white bg-[#615656] p-4 rounded-md pl-16 pr-16 tracking-widest hover:animate-bounce max-sm:pl-6 max-sm:pr-6 max-sm:text-lg'>COMPLETE ORDER</button>
                         </div>
                     </div>
                     <div className='flex flex-col flex-1 w-[80%] min-h-[80dvh] max-sm:border-b lg:border-l xl:border-l 2xl:border-l'>
