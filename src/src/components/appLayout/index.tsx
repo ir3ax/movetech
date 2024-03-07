@@ -42,6 +42,20 @@ export const AppLayout = () => {
             "reviewStatement":"Fast Delivery and Nice Product",
             "reviewRating":4.2,
             "createdAt":1709700347
+        },
+        {
+            "reviewId":"6",
+            "productId":"123e4567-e89b-12d3-a456-426655440004",
+            "reviewStatement":"Fast Delivery",
+            "reviewRating":4.9,
+            "createdAt":1709700347
+        },
+        {
+            "reviewId":"7",
+            "productId":"123e4567-e89b-12d3-a456-426655440006",
+            "reviewStatement":"Delivery is Fast and the product is genuine",
+            "reviewRating":5,
+            "createdAt":1709700347
         }
     ]
 
@@ -70,7 +84,8 @@ export const AppLayout = () => {
             ],
             "originalQuantity":25,
             "currentQuantity":6,
-            "productStatus":"ACT"
+            "productStatus":"ACT",
+            "productSold":633
         },
         {
             "productId":"123e4567-e89b-12d3-a456-426655440002",
@@ -96,7 +111,8 @@ export const AppLayout = () => {
             ],
             "originalQuantity":200,
             "currentQuantity":93,
-            "productStatus":"SOLD"
+            "productStatus":"SOLD",
+            "productSold":456
         },
         {
             "productId":"123e4567-e89b-12d3-a456-426655440003",
@@ -122,7 +138,8 @@ export const AppLayout = () => {
             ],
             "originalQuantity":50,
             "currentQuantity":18,
-            "productStatus":"ACT"
+            "productStatus":"ACT",
+            "productSold":870
         },
         {
             "productId":"123e4567-e89b-12d3-a456-426655440004",
@@ -148,7 +165,8 @@ export const AppLayout = () => {
             ],
             "originalQuantity":150,
             "currentQuantity":66,
-            "productStatus":"ACT"
+            "productStatus":"ACT",
+            "productSold":80
         },
         {
             "productId":"123e4567-e89b-12d3-a456-426655440005",
@@ -174,7 +192,8 @@ export const AppLayout = () => {
             ],
             "originalQuantity":50,
             "currentQuantity":25,
-            "productStatus":"SOLD"
+            "productStatus":"SOLD",
+            "productSold":280
         },
         {
             "productId":"123e4567-e89b-12d3-a456-426655440006",
@@ -200,7 +219,8 @@ export const AppLayout = () => {
             ],
             "originalQuantity":100,
             "currentQuantity":10,
-            "productStatus":"SOLD"
+            "productStatus":"SOLD",
+            "productSold":550
         },
     ]
 
@@ -222,7 +242,7 @@ export const AppLayout = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='w-full h-full bg-white pl-20 pr-20 pb-20 pt-10 max-sm:pl-10 max-sm:pr-10 max-sm:pb-10'>
+                    <div id='product-section' className='w-full h-full bg-white pl-20 pr-20 pb-20 pt-10 max-sm:pl-10 max-sm:pr-10 max-sm:pb-10'>
                         <div className='grid 2xl:grid-cols-5 lg:grid-cols-4 gap-6 max-sm:grid-cols-1'>
                         {techStackData.map((product, key) => {
                             // Filter reviews based on the current productId
@@ -240,8 +260,9 @@ export const AppLayout = () => {
                                         description2={product.description2}
                                         originalQuantity={product.originalQuantity}
                                         currentQuantity={product.currentQuantity}
-                                        productReviews={productReviews}
                                         productStatus={product.productStatus}
+                                        productSold={product.productSold}
+                                        productReviews={productReviews}
                                     />
                                 </div>
                             );

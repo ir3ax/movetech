@@ -21,10 +21,11 @@ interface ProductProps {
     originalQuantity: number;
     currentQuantity: number;
     productStatus:string;
+    productSold:number | undefined;
     productReviews: Review[];
 }
 
-export const ProductPage: React.FC<ProductProps> = ({ productId, img, imgName, discount, originalPrice, discountedPrice, description1, description2, originalQuantity, currentQuantity, productStatus, productReviews }) => {
+export const ProductPage: React.FC<ProductProps> = ({ productId, img, imgName, discount, originalPrice, discountedPrice, description1, description2, originalQuantity, currentQuantity, productStatus, productSold, productReviews }) => {
 
     const navigate = useNavigate();
     const setProductDetailsData = useSetAtom(productDetailsAtom)
@@ -47,6 +48,7 @@ export const ProductPage: React.FC<ProductProps> = ({ productId, img, imgName, d
             currentQuantity: currentQuantity,
             productStatus:productStatus,
             productRating: averageRating,
+            productSold: productSold
         })
         navigate(`/product-details/${productId}`);
         window.scrollTo(0, 0);
@@ -79,15 +81,15 @@ export const ProductPage: React.FC<ProductProps> = ({ productId, img, imgName, d
                         />
                         <div className='flex justify-start items-start w-full h-full gap-2'>
                             <div className='text-gray-400 text-sm'>{averageRating} ratings |</div>
-                            <div className='text-gray-400 text-sm'>123 sold</div>
+                            <div className='text-gray-400 text-sm'>{productSold} sold</div>
                         </div>
                     </div>
                     <div className='mt-4 ml-1 flex justify-start items-start text-xl font-bold lg:text-lg'>
                         <div className='flex flex-1 justify-start items-start text-[#A1133A] line-through'>
-                            ₱{originalPrice}
+                            ₱{originalPrice.toFixed(2)}
                         </div>
                         <div className='flex flex-1 justify-end items-end text-[#F36000]'>
-                            ₱{discountedPrice}
+                            ₱{discountedPrice.toFixed(2)}
                         </div>
                     </div>
                 </div>

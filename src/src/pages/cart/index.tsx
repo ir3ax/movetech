@@ -2,75 +2,148 @@ import StarRatings from "react-star-ratings";
 import Footer from "../../components/appLayout/footer"
 import { TopBar } from "../../components/appLayout/topbar"
 import { TableBody, TableCell, TableRow } from "../../components/ui/table";
-import { FetchCartDetails } from "../../service/cart/schema";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
 import { cartDetailsAtom } from "../../atom/cartDetailsAtom";
+import { checkOutAtom } from "../../atom/checkOutAtom";
+import { useEffect, useState } from "react";
+import EmptyCart from '../../assets/cart/empty-cart.jpg'
+
 
 export const Cart = () => {
 
-    const navigate = useNavigate();
-    const [cartDetails, setCartDetails] = useAtom(cartDetailsAtom);
-    console.log('cart-details',cartDetails);
+const navigate = useNavigate();
+const [cartDetails, setCartDetails] = useAtom(cartDetailsAtom);
+const [checkOutAtomValue, setCheckOutAtomValue] = useAtom(checkOutAtom);
+const [isChecked, setIsChecked] = useState<{ [productId: string]: boolean | undefined }>({});
 
-    // Sample data
-const cartDetailsValue: FetchCartDetails = {
-    products: [
-      {
-        productId: "123e4567-e89b-12d3-a456-426655440001",
-        productName: "[Baak] Ticarto T-2648G Stainless Couple Watch",
-        productImg: "https://yelsewph.business/cdn/shop/products/new_couple_540x.jpg?v=1560926945",
-        discount:"70% OFF",
-        rating:5,
-        quantity: 2,
-        price: 20.00,
-        total: 40.00
-      },
-      {
-        productId: "123e4567-e89b-12d3-a456-426655440002",
-        productName: "Shard Brand Luxury Couple watch Free Couple Ring",
-        productImg: "https://yelsewph.business/cdn/shop/products/NEW_CP_WATCH_540x.jpg?v=1555255601",
-        discount:"50% OFF",
-        rating:4.8,
-        quantity: 1,
-        price: 15.00,
-        total: 15.00
-      },
-      {
-        productId: "123e4567-e89b-12d3-a456-426655440003",
-        productName: "FNGEEN Mechanical Luminous Automatic watch Green",
-        productImg: "https://yelsewph.business/cdn/shop/products/authentic_fngeen_540x.jpg?v=1548169228",
-        discount:"65% OFF",
-        rating:4.6,
-        quantity: 3,
-        price: 10.00,
-        total: 30.00,
-      },
-    ],
-    grandTotal: 85.00
+const total = checkOutAtomValue.reduce((acc, product) => acc + (product.total || 0), 0);
+
+const handleCheckout = () => {
+    navigate('/checkout')
+}
+
+const onAdd = (productId: string | undefined) => {
+    setCartDetails((prevCartDetails) => {
+      if (!prevCartDetails) {
+        return prevCartDetails;
+      }
+  
+      const updatedCartDetails = {
+        ...prevCartDetails,
+        products: prevCartDetails.products.map((product) => {
+          if (product.productId === productId) {
+            const updatedQuantity = (product.quantity ?? 0) + 1;
+            const updatedTotal = product.price ? updatedQuantity * product.price : 0;
+            
+            return {
+              ...product,
+              quantity: updatedQuantity,
+              total: updatedTotal,
+            };
+          }
+          return product;
+        }),
+      };
+  
+      return updatedCartDetails;
+    });
+  };
+  
+  const onMinus = (productId: string | undefined) => {
+    setCartDetails((prevCartDetails) => {
+      if (!prevCartDetails) {
+        return prevCartDetails;
+      }
+  
+      const updatedCartDetails = {
+        ...prevCartDetails,
+        products: prevCartDetails.products.map((product) => {
+          if (product.productId === productId && (product.quantity ?? 0) > 1) {
+            const updatedQuantity = (product.quantity ?? 0) - 1;
+            const updatedTotal = product.price ? updatedQuantity * product.price : 0;
+  
+            return {
+              ...product,
+              quantity: updatedQuantity,
+              total: updatedTotal,
+            };
+          }
+          return product;
+        }),
+      };
+  
+      return updatedCartDetails;
+    });
   };
 
-  const handleCheckout = () => {
-    navigate('/checkout')
-  }
+  const handleDeleteProduct = (productId: string | undefined) => {
+    setCartDetails((prevCartDetails) => {
+      if (!prevCartDetails) {
+        return prevCartDetails;
+      }
+
+      const updatedProducts = prevCartDetails.products.filter((product) => product.productId !== productId);
+  
+      const updatedCartDetails = {
+        ...prevCartDetails,
+        products: updatedProducts,
+      };
+
+      if (updatedProducts.length === 0) {
+        localStorage.clear()
+      }
+  
+      return updatedCartDetails;
+    });
+  };
+
+  
+  const handleCheckboxChangeCart = (productId: string | undefined) => {
+    setIsChecked((prevChecked) => ({
+      ...prevChecked,
+      [productId || '']: !prevChecked[productId || ''],
+    }));
+  };
+
+  useEffect(() => {
+    const selectedProducts = cartDetails?.products?.filter((product) => product.productId && isChecked[product.productId]);
+    setCheckOutAtomValue(selectedProducts || []);
+  }, [isChecked, cartDetails?.products, setCheckOutAtomValue]);
 
 return(
     <div className='w-full h-full'>
        <div className='sticky top-0 z-50 drop-shadow-md shadow-black bg-[#f3efef]'>
             <TopBar />
         </div>
-        <div className='flex flex-col w-full min-h-[90dvh] bg-[#F4F4F4] 2xl:p-24 lg:p-12 text-[#1D1D1D] max-sm:p-2'>
+        {
+            cartDetails?.products && cartDetails.products.length < 1 ?
+            <div className='min-h-[90dvh] flex justify-center items-center'>
+                <div className='flex flex-col justify-center items-center gap-6 max-sm:p-10'>
+                    <img className='w-[10%] h-[10%] max-sm:w-[40%] max-sm:h-[40%]' src={EmptyCart}  alt='Empty Cart Logo'/>
+                    <h1 className='font-semibold text-xl max-sm:text-lg'>Your Cart is <span className='text-[#FF1211]'>Empty!</span></h1>
+                    <p className='text-md max-sm:text-center max-sm:text-sm'>Must add items on the cart before you proceed to check out.</p>
+                    <Link className='text-2xl font-normal text-white bg-[#615656] p-2 rounded-md pl-24 pr-24 tracking-normal hover:animate-bounce max-sm:pl-6 max-sm:pr-6 max-sm:text-lg lg:pr-12 lg:pl-12' to={'/#product-section'}>Continue Shopping</Link>
+                </div>
+            </div>
+            :
+            <div className='flex flex-col w-full min-h-[90dvh] bg-[#F4F4F4] 2xl:p-24 lg:p-12 text-[#1D1D1D] max-sm:p-2'>
             <div className='w-full h-full text-3xl font-normal tracking-wide'>Your Cart</div>
             <span className='w-[100%]  mt-4 border-b border-black max-sm:w-[100%] lg:w-[100%]' />
             <div className='flex justify-center items-center gap-8 mt-4 max-sm:flex-col max-sm:pb-12'>
                 <div className='flex flex-col w-[60%] min-h-[50dvh] max-h-[60vh] overflow-auto max-sm:w-[90%]'>
                 {/* <TableHeaders /> */}
-                {cartDetailsValue.products.map((index) => (
-                    <TableBody className='h-full text-center w-full mt-6 bg-white'>  
+                {cartDetails?.products?.map((index, key) => (
+                    <TableBody key={key} className='h-full text-center w-full mt-6 bg-white'>  
                         <TableRow className='flex max-sm:flex-col'> 
                             <TableCell className='w-[30%] flex justify-center items-center'>
-                                <input className='w-6 h-6 accent-[#615656]' type="checkbox" />
+                            <input
+                                className='w-6 h-6 accent-[#615656]'
+                                type="checkbox"
+                                checked={isChecked[index.productId!] || false}
+                                onChange={() => handleCheckboxChangeCart(index.productId)}
+                            />
                             </TableCell>
                             <TableCell className='w-[80%] flex justify-center items-center max-sm:w-[100%]'>
                                 <img className='w-24 h-24' src={index.productImg} alt={index.productName} />
@@ -89,20 +162,20 @@ return(
                                         starDimension='16px'
                                     />
                                     <div className='text-gray-400 text-sm mt-1'>{index.rating} ratings |</div>
-                                    <div className='text-gray-400 text-sm mt-1'>123 sold</div>
+                                    <div className='text-gray-400 text-sm mt-1'>{index.productSold} sold</div>
                                 </div>
                                 </div>
                             </TableCell> 
                             <TableCell className='w-[50%] max-sm:w-[100%]'>
                                 <div className='flex flex-col justify-start items-start gap-4 max-sm:justify-center max-sm:items-center lg:justify-center lg:items-center max-sm:flex-row'>
                                     <div className='text-lg text-[#F36000] font-semibold tracking-wide'>
-                                        ₱{index.price}
+                                        ₱{index.price?.toFixed(2)}
                                     </div>
                                     <div className='flex justify-center items-center gap-3'>
                                         <div className='text-sm text-gray-400'>
                                             {index.discount}
                                         </div>
-                                        <button className='text-sm text-gray-400 cursor-pointer'>
+                                        <button onClick={() => handleDeleteProduct(index.productId)} className='text-sm text-gray-400 cursor-pointer'>
                                             <RiDeleteBin6Line className='w-6 h-6' />
                                         </button>
                                     </div>
@@ -111,11 +184,11 @@ return(
                             <TableCell className='w-[100%] flex justify-center items-center'>
                                 <div className='flex justify-center items-center w-full mt-4'>
                                     <div className='flex justify-center items-center gap-2 w-[100%] max-sm:justify-center max-sm:w-[70%]'>
-                                        <button className='w-10 h-11 rounded-sm border bg-[#615656] max-sm:w-10 max-sm:h-10 hover:bg-[#918585]'>
+                                        <button disabled={index.quantity === 1} onClick={() => onMinus(index.productId)} className={`${index.quantity === 1 ? 'opacity-50' : 'opacity-100'} w-10 h-11 rounded-sm border bg-[#615656] max-sm:w-10 max-sm:h-10 hover:bg-[#918585]`}>
                                             <span className='text-1xl text-white'>-</span>
                                         </button>
-                                        <input value={index.quantity} className='w-8 h-11 border-t border-b text-center max-sm:w-8 max-sm:h-10' />
-                                        <button className='w-10 h-11 rounded-sm border bg-[#615656] max-sm:w-10 max-sm:h-10 hover:bg-[#918585]'>
+                                        <input  value={index.quantity} className='w-8 h-11 border-t border-b text-center max-sm:w-8 max-sm:h-10' />
+                                        <button onClick={() => onAdd(index.productId)} className='w-10 h-11 rounded-sm border bg-[#615656] max-sm:w-10 max-sm:h-10 hover:bg-[#918585]'>
                                             <span className='text-1xl text-white'>+</span>
                                         </button>
                                     </div>
@@ -134,7 +207,7 @@ return(
                         <div className='flex flex-col mt-8 gap-4'>
                             <div className='flex text-lg'>
                                 <p className='flex flex-1 justify-start items-start tracking-wide max-sm:text-[16px]'>Subtotal</p>
-                                <p className='flex flex-1 justify-center items-center max-sm:text-[16px]'>₱0.00</p>
+                                <p className='flex flex-1 justify-center items-center max-sm:text-[16px]'>₱{total.toFixed(2)}</p>
                             </div>
                             <div className='flex text-lg'>
                                 <p className='flex flex-1 justify-start items-start tracking-wide max-sm:text-[16px]'>Shipping Fee</p>
@@ -142,17 +215,19 @@ return(
                             </div>
                             <div className='flex text-lg mt-10'>
                                 <p className='flex flex-1 justify-start items-start tracking-wide max-sm:text-[16px]'>Total</p>
-                                <p className='flex flex-1 justify-center items-center max-sm:text-[16px]'>₱0.00</p>
+                                <p className='flex flex-1 justify-center items-center max-sm:text-[16px]'>₱{total.toFixed(2)}</p>
                             </div>
                         </div>
                         <div className='flex justify-start items-start w-full mt-12'>
-                            <button onClick={() => handleCheckout()} className='w-[80%] text-2xl font-normal text-white bg-[#615656] p-2 rounded-sm tracking-widest hover:animate-bounce max-sm:pl-6 max-sm:pr-6 max-sm:text-lg lg:w-[100%] lg:text-xl max-sm:text-[16px] max-sm:w-[100%]'>PROCEED TO CHECKOUT</button>
+                            <button disabled={total === 0 ? true : false} onClick={() => handleCheckout()} className={`${total === 0 ? 'opacity-50' : 'opacity-100 hover:animate-bounce'} w-[80%] text-2xl font-normal text-white bg-[#615656] p-2 rounded-sm tracking-widest max-sm:pl-6 max-sm:pr-6 max-sm:text-lg lg:w-[100%] lg:text-xl max-sm:text-[16px] max-sm:w-[100%]`}>PROCEED TO CHECKOUT</button>
                         </div>
                     </div>
                 </div>
                 </div>
             </div>
         </div>
+        }
+        
         <div>
             <Footer />
         </div>

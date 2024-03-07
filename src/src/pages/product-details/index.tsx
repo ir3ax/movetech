@@ -36,6 +36,7 @@ export const ProductDetails = () => {
             productImg: productDetailsValue?.img,
             discount: productDetailsValue?.discount,
             rating: productDetailsValue?.productRating,
+            productSold: productDetailsValue?.productSold,
             quantity: stateQuantity,
             price: productDetailsValue?.discountedPrice,
             total: stateQuantity * (productDetailsValue?.discountedPrice || 0),
@@ -45,21 +46,15 @@ export const ProductDetails = () => {
         if (!cartDetails) {
           const initialCartDetails: FetchCartDetails = {
             products: [],
-            grandTotal: 0,
           };
           setCartDetails(initialCartDetails);
         }
       
         setCartDetails((prevCartDetails) => {
             const updatedProducts = [...prevCartDetails!.products, ...newProducts];
-            const updatedGrandTotal = updatedProducts.reduce((total, product) => {
-            return total + (product.total || 0);
-            }, 0);
-
             return {
             ...prevCartDetails!,
             products: updatedProducts,
-            grandTotal: updatedGrandTotal,
             };
         });
         navigate('/cart')
@@ -105,8 +100,8 @@ export const ProductDetails = () => {
                             </div>
                             <span className='h-[2px] w-[80%] bg-slate-700 mt-4 border-b border-slate-700 max-sm:w-[100%] lg:w-[90%]' />
                             <div className='flex justify-center items-center w-full mt-12 text-2xl max-sm:mt-6 lg:mt-6'>
-                                <p className='flex flex-1 justify-start items-start text-[#A1133A] font-semibold line-through max-sm:justify-center lg:text-lg'>₱{productDetailsValue?.originalPrice}</p>
-                                <p className='flex flex-1 justify-start items-start text-[#F36000] font-semibold max-sm:justify-center lg:text-lg'>₱{productDetailsValue?.discountedPrice}</p>
+                                <p className='flex flex-1 justify-start items-start text-[#A1133A] font-semibold line-through max-sm:justify-center lg:text-lg'>₱{productDetailsValue?.originalPrice.toFixed(2)}</p>
+                                <p className='flex flex-1 justify-start items-start text-[#F36000] font-semibold max-sm:justify-center lg:text-lg'>₱{productDetailsValue?.discountedPrice.toFixed(2)}</p>
                             </div>
                             <div className='max-sm:hidden mt-6 w-[60%] flex flex-col justify-start items-start gap-2 max-sm:w-[100%] max-sm:pl-12 max-sm:pr-12 max-sm:justify-center max-sm:items-center'>
                                 <span className='text-xl font-normal tracking-wide'>ONLY <span className='text-[#DB1461]'>{productDetailsValue?.currentQuantity}</span> LEFT</span>
@@ -122,7 +117,7 @@ export const ProductDetails = () => {
                                         starDimension='16px'
                                     />
                                     <div className='text-gray-400 text-sm mt-1'>{productDetailsValue?.productRating} ratings |</div>
-                                    <div className='text-gray-400 text-sm mt-1'>123 sold</div>
+                                    <div className='text-gray-400 text-sm mt-1'>{productDetailsValue?.productSold} sold</div>
                                 </div>
                             </div>
                             <div className='max-sm:hidden flex justify-center items-center w-full mt-8 lg:gap-4'>

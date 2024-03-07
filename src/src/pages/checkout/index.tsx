@@ -4,9 +4,9 @@ import Footer from '../../components/appLayout/footer';
 import { TopBar } from '../../components/appLayout/topbar';
 import { Input } from '../../components/input';
 import { places } from '../../utility/places';
-import { productDetailsAtom } from '../../atom/productDetailsAtom';
-import { useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
 import StarRatings from 'react-star-ratings';
+import { checkOutAtom } from '../../atom/checkOutAtom';
 
 const CheckOut = () => {
 
@@ -14,8 +14,9 @@ const CheckOut = () => {
     const [selectedProvince, setSelectedProvince] = useState<string>('');
     const [selectedCity, setSelectedCity] = useState<string>('');
     const [selectedBarangay, setSelectedBarangay] = useState<string>('');
+    const [checkOutAtomValue, ] = useAtom(checkOutAtom);
 
-    const productDetailsValue = useAtomValue(productDetailsAtom);
+    const total = checkOutAtomValue.reduce((acc, product) => acc + (product.total || 0), 0);
   
 	return (
 		<div className='w-full h-full'>
@@ -152,71 +153,36 @@ const CheckOut = () => {
                     </div>
                     <div className='flex flex-col flex-1 w-[80%] min-h-[80dvh] max-sm:border-b lg:border-l xl:border-l 2xl:border-l'>
                            <div className='flex flex-col justify-start items-start max-sm:w-full pr-12 pl-12 max-sm:pr-2 max-sm:pl-2'>
-                                <div className='p-4 flex gap-12 border-b max-sm:flex-col max-sm:gap-4 max-sm:justify-center max-sm:items-center max-sm:text-center max-sm:text-sm'>
-                                    <img className='w-24 h-24' src={productDetailsValue?.img} alt={productDetailsValue?.imgName} />
-                                    <div className='flex flex-col gap-3'>
-                                        <p>{productDetailsValue?.imgName}</p>
-                                        <div className='flex justify-start items-start w-full h-full gap-2'>
-                                            <StarRatings
-                                                rating={1}
-                                                starRatedColor="#FCD53F"
-                                                numberOfStars={1}
-                                                name='rating'
-                                                starDimension='16px'
-                                            />
-                                            <div className='text-gray-400 text-sm mt-1'>{productDetailsValue?.rating} ratings |</div>
-                                            <div className='text-gray-400 text-sm mt-1'>123 sold</div>
+                                {
+                                    checkOutAtomValue.map((index, key) => (
+                                    <div key={key} className='relative p-4 flex gap-12 border-b max-sm:flex-col max-sm:gap-4 max-sm:justify-center max-sm:items-center max-sm:text-center max-sm:text-sm'>
+                                        <img className='w-24 h-24' src={index.productImg} alt={index.productName}></img>
+                                        <span className='absolute w-5 h-5 rounded-full bg-[#F36000] text-sm flex justify-center items-center top-2 text-white p-1 max-sm:left-4'>{(index.quantity)}</span>
+                                        <div className='flex flex-col gap-3'>
+                                            <p>{index?.productName}</p>
+                                            <div className='flex justify-start items-start w-full h-full gap-2'>
+                                                <StarRatings
+                                                    rating={index.rating}
+                                                    starRatedColor="#FCD53F"
+                                                    numberOfStars={1}
+                                                    name='rating'
+                                                    starDimension='16px'
+                                                />
+                                                <div className='text-gray-400 text-sm mt-1'>{index.rating} ratings |</div>
+                                                <div className='text-gray-400 text-sm mt-1'>{index.productSold} sold</div>
+                                            </div>
+                                        </div>
+                                        <div className='ml-8 flex justify-center items-center max-sm:ml-0'>
+                                            <p className='text-[#F36000]'>₱{index.quantity && index.price ? (index.quantity * index.price).toFixed(2) : 0}</p>
                                         </div>
                                     </div>
-                                    <div className='ml-8 flex justify-center items-center max-sm:ml-0'>
-                                        <p className='text-[#F36000]'>₱{productDetailsValue?.discountedPrice}</p>
-                                    </div>
-                                </div>
-                                <div className='p-4 flex gap-12 border-b max-sm:flex-col max-sm:gap-4 max-sm:justify-center max-sm:items-center max-sm:text-center max-sm:text-sm'>
-                                    <img className='w-24 h-24' src={productDetailsValue?.img} alt={productDetailsValue?.imgName} />
-                                    <div className='flex flex-col gap-3'>
-                                        <p>{productDetailsValue?.imgName}</p>
-                                        <div className='flex justify-start items-start w-full h-full gap-2'>
-                                            <StarRatings
-                                                rating={1}
-                                                starRatedColor="#FCD53F"
-                                                numberOfStars={1}
-                                                name='rating'
-                                                starDimension='16px'
-                                            />
-                                            <div className='text-gray-400 text-sm mt-1'>{productDetailsValue?.rating} ratings |</div>
-                                            <div className='text-gray-400 text-sm mt-1'>123 sold</div>
-                                        </div>
-                                    </div>
-                                    <div className='ml-8 flex justify-center items-center max-sm:ml-0'>
-                                        <p className='text-[#F36000]'>₱{productDetailsValue?.discountedPrice}</p>
-                                    </div>
-                                </div>
-                                <div className='p-4 flex gap-12 border-b max-sm:flex-col max-sm:gap-4 max-sm:justify-center max-sm:items-center max-sm:text-center max-sm:text-sm'>
-                                    <img className='w-24 h-24' src={productDetailsValue?.img} alt={productDetailsValue?.imgName} />
-                                    <div className='flex flex-col gap-3'>
-                                        <p>{productDetailsValue?.imgName}</p>
-                                        <div className='flex justify-start items-start w-full h-full gap-2'>
-                                            <StarRatings
-                                                rating={1}
-                                                starRatedColor="#FCD53F"
-                                                numberOfStars={1}
-                                                name='rating'
-                                                starDimension='16px'
-                                            />
-                                            <div className='text-gray-400 text-sm mt-1'>{productDetailsValue?.rating} ratings |</div>
-                                            <div className='text-gray-400 text-sm mt-1'>123 sold</div>
-                                        </div>
-                                    </div>
-                                    <div className='ml-8 flex justify-center items-center max-sm:ml-0'>
-                                        <p className='text-[#F36000]'>₱{productDetailsValue?.discountedPrice}</p>
-                                    </div>
-                                </div>
+                                    ))
+                                }
                            </div>
                            <div className='mt-12 flex flex-col justify-start items-start max-sm:w-full pr-12 pl-12 gap-4 text-xl max-sm:pb-12 max-sm:pr-2 max-sm:pl-2 max-sm:text-sm max-sm:justify-center max-sm:items-center'>
                                 <div className='w-full flex justify-center items-center'>
                                     <p className='flex flex-1 justify-start items-start font-semibold'>Subtotal</p>
-                                    <p className='flex flex-1 justify-center items-center '>₱{productDetailsValue?.discountedPrice}</p>
+                                    <p className='flex flex-1 justify-center items-center '>₱{total.toFixed(2)}</p>
                                 </div>
                                 <div className='w-full flex justify-center items-center'>
                                     <p className='flex flex-1 justify-start items-start font-semibold'>Shipping Fee</p>
@@ -224,7 +190,7 @@ const CheckOut = () => {
                                 </div>
                                 <div className='w-full flex justify-center items-center text-3xl mt-4 max-sm:text-[20px]'>
                                     <p className='flex flex-1 justify-start items-start font-semibold '>Total</p>
-                                    <p className='flex flex-1 justify-center items-center font-semibold max-sm:font-normal'>₱{productDetailsValue?.discountedPrice}</p>
+                                    <p className='flex flex-1 justify-center items-center font-semibold max-sm:font-normal'>₱{total.toFixed(2)}</p>
                                 </div>
                            </div>
                     </div>

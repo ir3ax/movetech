@@ -11,4 +11,5 @@ export type FetchProductDetails = {
     currentQuantity:number;
     productStatus:string;
     productRating: number;
+    productSold: number | undefined;
 }  
