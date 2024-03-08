@@ -32,5 +32,6 @@ export type CompleteAddress = {
 
 export type CompleteProductInfo = {
     productId: string | undefined;
+    productName: string | undefined;
     quantity: number | undefined;
 };

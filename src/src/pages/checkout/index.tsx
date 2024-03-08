@@ -63,6 +63,7 @@ const CheckOut = () => {
         // Assuming checkOutAtomValue is an array of products with productId and quantity
         const productsInfo: CompleteProductInfo[] = checkOutAtomValue.map((product) => ({
             productId: product.productId,
+            productName: product.productName,
             quantity: product.quantity,
         }));
     
