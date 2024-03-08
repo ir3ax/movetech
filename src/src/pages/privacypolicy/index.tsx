@@ -1,4 +1,4 @@
-import PrivacyPolicyImg from '../../assets/utilities/termsOfUse.png';
+import PrivacyPolicyImg from '../../assets/utilities/privacyPolicy.png';
 import Footer from '../../components/appLayout/footer';
 import { TopBar } from '../../components/appLayout/topbar';
 
