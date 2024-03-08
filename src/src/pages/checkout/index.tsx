@@ -91,7 +91,7 @@ const CheckOut = () => {
         setCompleteCheckOutAtomValue((prevCompleteCheckOut) => [...prevCompleteCheckOut, newCompleteCheckOut]);
     
         navigate('/success');
-        localStorage.clear();
+        // localStorage.clear();
     };
     
 	return (

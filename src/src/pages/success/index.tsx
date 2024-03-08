@@ -2,8 +2,15 @@ import { Link } from "react-router-dom"
 import Checked from '../../assets/cart/checked.png'
 import { TopBar } from "../../components/appLayout/topbar"
 import Footer from "../../components/appLayout/footer"
+import { useAtom } from "jotai"
+import { completeCheckOut } from "../../atom/checkOutAtom"
 
 export const Success = () => {
+
+    const [completeCheckOutAtom , ] = useAtom(completeCheckOut);
+
+    console.log('Complete CheckOut Details:', completeCheckOutAtom)
+
     return(
         <div className='w-full h-full'>
         <div className='sticky top-0 z-50 drop-shadow-md shadow-black bg-[#f3efef]'>
