@@ -2,14 +2,14 @@ import { Link } from "react-router-dom"
 import Checked from '../../assets/cart/checked.png'
 import { TopBar } from "../../components/appLayout/topbar"
 import Footer from "../../components/appLayout/footer"
-import { useAtom } from "jotai"
-import { completeCheckOut } from "../../atom/checkOutAtom"
+// import { useAtom } from "jotai"
+// import { completeCheckOut } from "../../atom/checkOutAtom"
 
 export const Success = () => {
 
-    const [completeCheckOutAtom , ] = useAtom(completeCheckOut);
+    // const [completeCheckOutAtom , ] = useAtom(completeCheckOut);
 
-    console.log('Complete CheckOut Details:', completeCheckOutAtom)
+    // console.log('Complete CheckOut Details:', completeCheckOutAtom)
 
     return(
         <div className='w-full h-full'>

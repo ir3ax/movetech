@@ -9,6 +9,7 @@ export type CartProduct = {
   discount: string | undefined;
   rating: number | undefined;
   productSold: number | undefined;
+  productFreebies: string | undefined | null;
   quantity: number | undefined;
   price: number | undefined;
   total: number | undefined;

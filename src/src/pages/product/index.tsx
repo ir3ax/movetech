@@ -22,10 +22,11 @@ interface ProductProps {
     currentQuantity: number;
     productStatus:string;
     productSold:number | undefined;
+    productFreebies: string | undefined | null | unknown;
     productReviews: Review[];
 }
 
-export const ProductPage: React.FC<ProductProps> = ({ productId, img, imgName, discount, originalPrice, discountedPrice, description1, description2, originalQuantity, currentQuantity, productStatus, productSold, productReviews }) => {
+export const ProductPage: React.FC<ProductProps> = ({ productId, img, imgName, discount, originalPrice, discountedPrice, description1, description2, originalQuantity, currentQuantity, productStatus, productSold, productFreebies, productReviews }) => {
 
     const navigate = useNavigate();
     const setProductDetailsData = useSetAtom(productDetailsAtom)
@@ -48,7 +49,8 @@ export const ProductPage: React.FC<ProductProps> = ({ productId, img, imgName, d
             currentQuantity: currentQuantity,
             productStatus:productStatus,
             productRating: averageRating,
-            productSold: productSold
+            productSold: productSold,
+            productFreebies: productFreebies
         })
         navigate(`/product-details/${productId}`);
         window.scrollTo(0, 0);

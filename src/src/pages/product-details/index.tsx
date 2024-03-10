@@ -5,7 +5,7 @@ import Footer from "../../components/appLayout/footer";
 import StarRatings from "react-star-ratings";
 import { cartDetailsAtom } from "../../atom/cartDetailsAtom";
 import { CartProduct, FetchCartDetails } from "../../service/cart/schema";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
@@ -14,6 +14,7 @@ export const ProductDetails = () => {
     const [productDetailsValue, ] = useAtom(productDetailsAtom);
     const [cartDetails, setCartDetails] = useAtom(cartDetailsAtom);
     const [ stateQuantity, setStateQuantity ] = useState<number>(1);
+    const [selectedFreebie, setSelectedFreebie] = useState(null);
     const navigate = useNavigate();
 
     // Calculate the percentage completion
@@ -37,6 +38,7 @@ export const ProductDetails = () => {
             discount: productDetailsValue?.discount,
             rating: productDetailsValue?.productRating,
             productSold: productDetailsValue?.productSold,
+            productFreebies: selectedFreebie,
             quantity: stateQuantity,
             price: productDetailsValue?.discountedPrice,
             total: stateQuantity * (productDetailsValue?.discountedPrice || 0),
@@ -76,7 +78,13 @@ export const ProductDetails = () => {
           setCurrentImageIndex(index);
         }
       };
-    
+
+     useEffect(() => {
+        if (Array.isArray(productDetailsValue?.productFreebies) && productDetailsValue.productFreebies.length > 0) {
+            setSelectedFreebie(productDetailsValue.productFreebies[0].freebiesName);
+        }
+    }, [productDetailsValue]);
+
     return (
         <div className='w-full h-full'>
             <div className='sticky top-0 z-50 drop-shadow-md shadow-black bg-[#f3efef]'>
@@ -128,13 +136,13 @@ export const ProductDetails = () => {
                                     <div className='text-gray-400 text-sm mt-1'>{productDetailsValue?.productSold} sold</div>
                                 </div>
                             </div>
-                            <div className='max-sm:hidden flex justify-center items-center w-full mt-8 lg:gap-4'>
+                            <div className='max-sm:hidden flex justify-center items-center w-full mt-8 lg:gap-4 mb-6'>
                                 <div className='flex justify-start items-start gap-1 w-[20%] max-sm:justify-center max-sm:w-[70%]'>
                                     <button disabled={stateQuantity === 1} onClick={onMinus} className={`${stateQuantity === 1 ? 'opacity-50' : 'opacity-100'} w-12 h-12 rounded-sm border bg-[#615656] max-sm:w-10 max-sm:h-10`}>
                                         <span className='text-3xl text-white lg:text-lg'>-</span>
                                     </button>
                                     <input value={stateQuantity} className='w-10 h-12 border-t border-b text-center max-sm:w-8 max-sm:h-10' />
-                                    <button onClick={onAdd} className='w-12 h-12 rounded-sm border bg-[#615656] max-sm:w-10 max-sm:h-10'>
+                                    <button disabled={stateQuantity >= (productDetailsValue?.currentQuantity ?? 0)} onClick={onAdd} className={`${stateQuantity >= (productDetailsValue?.currentQuantity ?? 0) ? 'opacity-50' : 'opacity-100'} w-12 h-12 rounded-sm border bg-[#615656] max-sm:w-10 max-sm:h-10`}>
                                         <span className='text-3xl text-white lg:text-lg'>+</span>
                                     </button>
                                 </div>
@@ -142,13 +150,50 @@ export const ProductDetails = () => {
                                     <button onClick={handleAddToCart} className='text-2xl font-normal text-white bg-[#615656] p-2 rounded-md pl-24 pr-24 tracking-normal hover:animate-bounce max-sm:pl-6 max-sm:pr-6 max-sm:text-lg lg:pr-12 lg:pl-12'>Add to Cart</button>
                                 </div>
                             </div>
+                            {
+                                Array.isArray(productDetailsValue?.productFreebies) && productDetailsValue?.productFreebies.length ?
+                                <>
+                                    <h1 className='text-xl max-sm:flex max-sm:justify-center max-sm:items-center w-full max-sm:mt-12 lg:mt-12'>Select Freebies:</h1>
+                                    <span className='h-[2px] w-[80%] bg-slate-700 mt-4 border-b border-slate-700 max-sm:w-[100%] lg:w-[90%]' />
+                                </>
+                                :
+                                null
+                            }
+                            <div className='mt-8 w-full h-full flex justify-start items-start max-sm:justify-center max-sm:items-center'>
+                                <div className='grid 2xl:grid-cols-4 lg:grid-cols-3 gap-6 max-sm:grid-cols-2 max-sm:p-4 max-sm:max-h-[50dvh] max-sm:overflow-auto'>
+                                {
+                                    Array.isArray(productDetailsValue?.productFreebies) &&
+                                    productDetailsValue.productFreebies.map((freebiesSet, index) => (
+                                        <div key={freebiesSet?.productId ?? index} className="flex flex-col items-center border p-4 rounded-sm text-center gap-2">
+                                        <label
+                                            htmlFor={`default-radio-${freebiesSet?.productId ?? index}`}
+                                            className="ms-2 text-sm font-normal"
+                                        >
+                                            {freebiesSet.freebiesName}
+                                        </label>
+                                        <img className='w-28 h-28' src={freebiesSet.freebiesImg} />
+                                        <input
+                                            id={`default-radio-${freebiesSet?.productId ?? index}`}
+                                            type="radio"
+                                            value=""
+                                            onChange={() => setSelectedFreebie(freebiesSet.freebiesName)}
+                                            name="default-radio"
+                                            className="h-5 w-5 accent-[#615656] p-2 my-3"
+                                            defaultChecked={index === 0}
+                                        />
+                                        </div>
+                                        
+                                    ))
+                                }
+                                </div>
+                            </div>
                             <h1 className='mt-24 text-xl max-sm:flex max-sm:justify-center max-sm:items-center w-full max-sm:mt-12 lg:mt-12'>Product Details</h1>
                             <span className='h-[2px] w-[80%] bg-slate-700 mt-4 border-b border-slate-700 max-sm:w-[100%] lg:w-[90%]' />
                             <div className='flex flex-col justify-start items-start w-full mt-8 pb-24 max-sm:flex max-sm:justify-center max-sm:items-center max-sm:w-full max-sm:pb-48'>
-                                <div className='w-[80%] text-lg text-start max-sm:text-md'>
+                                <div className='w-[80%] text-md text-start max-sm:text-md'>
                                     {productDetailsValue?.description1 as string}
                                 </div>
-                                <div className='mt-6 text-lg max-sm:text-md'>
+                                <div className='mt-6 text-md max-sm:text-md'>
                                 {
                                     (productDetailsValue?.description2 as string[] | undefined)?.map((item, index) => (
                                     <p className='py-1' key={index}>* {item}</p>

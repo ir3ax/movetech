@@ -7,6 +7,7 @@ export type FetchCheckOut = {
     productImg: string | undefined;
     productName: string | undefined;
     productSold: number | undefined;
+    productFreebies: string | undefined | null;
     rating: number | undefined;
 };
 
@@ -34,4 +35,5 @@ export type CompleteProductInfo = {
     productId: string | undefined;
     productName: string | undefined;
     quantity: number | undefined;
+    productFreebies: string | undefined | null;
 };

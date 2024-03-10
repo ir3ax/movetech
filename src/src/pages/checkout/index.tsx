@@ -65,6 +65,7 @@ const CheckOut = () => {
             productId: product.productId,
             productName: product.productName,
             quantity: product.quantity,
+            productFreebies: product.productFreebies
         }));
     
         const newCompleteCheckOut: CompleteCheckOut = {
@@ -91,7 +92,7 @@ const CheckOut = () => {
         setCompleteCheckOutAtomValue((prevCompleteCheckOut) => [...prevCompleteCheckOut, newCompleteCheckOut]);
     
         navigate('/success');
-        // localStorage.clear();
+        localStorage.clear();
     };
     
 	return (

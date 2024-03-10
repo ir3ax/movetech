@@ -94,7 +94,20 @@ export const AppLayout = () => {
             "originalQuantity":25,
             "currentQuantity":6,
             "productStatus":"ACT",
-            "productSold":633
+            "productSold":633,
+            "productFreebies": [
+                {
+                    "freebiesCode":"SET A",
+                    "freebiesName": "Bracelet",
+                    "freebiesImg": "https://products.riogrande.com/products/614670.jpg" 
+                },
+                {
+                    "freebiesCode":"SET B",
+                    "freebiesName": "Earpods",
+                    "freebiesImg": "https://th.bing.com/th/id/OIP.KNGEfNS21MWd6ATqoMYSXQHaHa?rs=1&pid=ImgDetMain"
+                }
+            ]
+            
         },
         {
             "productId":"123e4567-e89b-12d3-a456-426655440002",
@@ -183,7 +196,34 @@ export const AppLayout = () => {
             "originalQuantity":150,
             "currentQuantity":66,
             "productStatus":"ACT",
-            "productSold":80
+            "productSold":80,
+            "productFreebies": [
+                {
+                    "freebiesCode":"SET A",
+                    "freebiesName": "Silver Necklace",
+                    "freebiesImg": "https://th.bing.com/th/id/OIP.hhbU_rO4grJIVRhByfi7AQHaHa?rs=1&pid=ImgDetMain" 
+                },
+                {
+                    "freebiesCode":"SET B",
+                    "freebiesName": "Beads Bracelet",
+                    "freebiesImg": "https://th.bing.com/th/id/OIP.I2vIrgU9iELJS9t3piY-AwAAAA?w=380&h=285&rs=1&pid=ImgDetMain"
+                },
+                {
+                    "freebiesCode":"SET C",
+                    "freebiesName": "Ray-Ban Sun Glass",
+                    "freebiesImg": "https://i5.walmartimages.com/asr/a5a92877-7380-43a5-adeb-49d1464e66b8_1.72f569983cdbaf4a7375984dd2ef48df.jpeg"
+                },
+                {
+                    "freebiesCode":"SET D",
+                    "freebiesName": "JBL Earpods",
+                    "freebiesImg": "https://academy.scene7.com/is/image/academy/og-image/20936859"
+                },
+                {
+                    "freebiesCode":"SET E",
+                    "freebiesName": "Silver Earrings",
+                    "freebiesImg": "https://th.bing.com/th/id/OIP.N-nB2lz_GKDLXfEpsUa62wHaHa?rs=1&pid=ImgDetMain"
+                }
+            ]
         },
         {
             "productId":"123e4567-e89b-12d3-a456-426655440005",
@@ -280,6 +320,7 @@ export const AppLayout = () => {
                                         productStatus={product.productStatus}
                                         productSold={product.productSold}
                                         productReviews={productReviews}
+                                        productFreebies={product.productFreebies}
                                     />
                                 </div>
                             );

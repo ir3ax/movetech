@@ -12,4 +12,5 @@ export type FetchProductDetails = {
     productStatus:string;
     productRating: number;
     productSold: number | undefined;
+    productFreebies: string | undefined | null | unknown;
 }  
