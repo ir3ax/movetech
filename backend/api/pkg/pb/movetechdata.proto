@@ -1,0 +1,113 @@
+syntax = "proto3";
+
+package api;
+
+option go_package = "./pkg/pb";
+
+service MoveTechAdminProtoService {
+    rpc SaveProduct(SaveProductRequest) returns (SaveProductResponse) {}
+    // rpc GetPDFDataByStatus(GetPDFDataByStatusRequest) returns (GetPDFDataByStatusResponse);
+    // rpc UpdateSaveFileByID (UpdateSaveFileByIDRequest) returns (CreatePdfExtractorResponse) {}
+    // rpc UpdateSaveFileStatus (UpdateSaveFileStatusRequest) returns (CreatePdfExtractorResponse) {}
+    // rpc SaveChangeHistory (ChangeHistoryRequest) returns (ChangeHistoryResponse) {}
+    // rpc GetChangeHistory(GetChangeHistoryRequest) returns (GetChangeHistoryResponse);
+    // rpc UpdateChangeHistoryByID (UpdateChangeHistoryByIDRequest) returns (ChangeHistoryResponse) {}
+}
+
+message ProductData {
+    string productId = 1;
+    string imgName = 2;
+    string img = 3;
+    double discount = 4;
+    double originalPrice = 5;
+    double discountedPrice = 6;
+    string description1 = 7;
+    string description2 = 8;
+    double originalQuantity = 9;
+    double currentQuantity = 10;
+    string productStatus = 11;
+    double productSold = 12;
+    string productFreebies = 13;
+    string createdBy = 14;
+    int64 createdAt = 15;
+    string updatedBy = 16;
+    int64 updatedAt = 17;
+}
+
+message SaveProductRequest {
+    string imgName = 1;
+    string img = 2;
+    double discount = 3;
+    double originalPrice = 4;
+    double discountedPrice = 5;
+    string description1 = 6;
+    string description2 = 7;
+    double originalQuantity = 8;
+    double currentQuantity = 9;
+    string productStatus = 10;
+    double productSold = 11;
+    string productFreebies = 12;
+}
+
+message SaveProductResponse {
+    ProductData productData = 1;
+}
+
+// message GetPDFDataByStatusRequest {
+//     string csvStatus = 1;
+//     bool sort_by_csv_name = 2;
+//     bool sort_desc_csv_name = 3;
+//     bool sort_by_created_at = 4;
+//     bool sort_desc_created_at = 5;
+//     string searchQuery = 7;
+// }
+
+
+// message GetPDFDataByStatusResponse {
+//     repeated PdfExtractorData pdfDataList = 1;
+// }
+
+// message UpdateSaveFileByIDRequest {
+//     string csvFilesId = 1;
+//     string csvFileJson = 2;
+//     string csvName = 3;
+// }
+
+// message UpdateSaveFileStatusRequest {
+//     string csvFilesId = 1;
+//     string csvStatus = 2;
+// }
+
+// message ChangeHistoryData {
+//     string changeHistoryId = 1;
+//     string csvFilesId = 2;
+//     string changeHistoryData = 3;
+//     string createdBy = 4;
+//     int64 createdAt = 5;
+//     string updatedBy = 6;
+//     int64 updatedAt = 7; 
+// }
+
+// message ChangeHistoryRequest {
+//     string csvFilesId = 1;
+//     string changeHistoryData = 2;
+//     string createdBy = 3;
+// }
+
+// message ChangeHistoryResponse {
+//     ChangeHistoryData changeHistoryData = 1;
+// }
+
+// message GetChangeHistoryRequest{
+//     string csvFilesId = 1;
+//     string searchChangeHistoryQuery = 2;
+// }
+
+// message GetChangeHistoryResponse {
+//     repeated ChangeHistoryData changeHistoryList = 1;
+// }
+
+// message UpdateChangeHistoryByIDRequest {
+//     string csvFilesId = 1;
+//     string changeHistoryData = 2;
+// }
