@@ -4,7 +4,7 @@ import { ProductName } from "./product-name-price";
 import { ProductImages } from "./product-images";
 import { ProductDescription } from "./product-description";
 import { ProductFreebies } from "./product-freebies";
-import Stepper from "awesome-react-stepper-dennis/dist/esm/components/Stepper";
+import Stepper from "../../../../../components/stepper";
 
 interface Xprox {
     isVisible: boolean;
@@ -13,24 +13,13 @@ interface Xprox {
 
 export const ModalView = (props: Xprox) => {
 
-    // const steps = [
-    //     { name: "Product Name", component: <ProductName /> },
-    //     { name: "Product Images", component: <ProductImages /> },
-    //     { name: "Product Description", component: <ProductDescription /> },
-    //     { name: "Product Freebies", component: <ProductFreebies /> }
-    //   ];
-
-    const qwe = () => {
-        console.log('qweqweqe')
-    }
-
     return (
       <Modal open={props.isVisible} onClose={props.handleClose}>
         <div className='flex flex-col justify-start w-[66rem] h-[36rem] bg-white p-8 overflow-auto'>
               <button onClick={props.handleClose} className='flex justify-end items-end w-full'>
                 <IoIosClose  className='w-6 h-6 text-[#808080] cursor-pointer' />
               </button>
-              <div className='mt-6 w-full '>
+              <div className='mt-6 w-full h-full'>
               <Stepper
                     strokeColor="#17253975"
                     fillStroke="#172539"
@@ -42,7 +31,6 @@ export const ModalView = (props: Xprox) => {
                     onSubmit={
                         (step) => alert(`Thank you!!! Final Step -> ${step}`)
                     }
-                    onPrev={qwe}
                     >
                     <div className="stepperSubDiv">
                         <ProductName />
