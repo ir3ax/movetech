@@ -1,11 +1,20 @@
 
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { IoAddCircleOutline } from "react-icons/io5";
+import { ModalView } from "./add-modal";
+import { useState } from "react";
 
 export const ProductContent = () => {
+
+    const [openView, setOpenView] = useState<boolean>(false);
+
+    const handleCloseView = () => {
+        setOpenView(false);
+    }
     
     return (
         <div className='w-full h-full bg-[#f9fbfc]'>
+            <ModalView isVisible={openView} handleClose={handleCloseView} />
                 <div className='flex w-full'>
                     <div className='relative w-full flex flex-1 justify-start items-start'>
                         <span className='absolute top-3 left-4'>
@@ -20,6 +29,7 @@ export const ProductContent = () => {
                     <div className='w-full flex flex-1 justify-end items-end'>
                         <button
                         className='flex justify-center items-center gap-2 pl-8 pr-8 h-[40px]  rounded-md border text-md bg-[#5962FF] text-white font-semibold hover:bg-[#8265FF]'
+                        onClick={() => setOpenView(true)}
                         >
                             <span>Add Product</span>
                             <span className='mt-[1px]'>
@@ -48,7 +58,7 @@ export const ProductContent = () => {
                         </div>
                     </div>
                     <div className='mt-8 bg-white w-full h-full min-h-[60dvh] border'>
-
+                        
                     </div>
                 </div>
         </div>
