@@ -25,7 +25,7 @@ export const TopBar = () => {
       }, [cartDetails]);
 
       const handleNavigateToCart = () => {
-        navigate('/cart');
+        navigate('/dashboard');
         window.scrollTo(0, 0);
       }
     
