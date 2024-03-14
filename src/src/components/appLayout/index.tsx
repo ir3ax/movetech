@@ -5,6 +5,7 @@ import { ProductPage } from "../../pages/product";
 import Footer from "./footer";
 import { useAtom } from "jotai";
 import { completeCheckOut } from "../../atom/checkOutAtom";
+import { Dashboard } from "../../pages/dashboard";
 
 
 export const AppLayout = () => {
@@ -286,7 +287,6 @@ export const AppLayout = () => {
             <div className='w-full h-full'>
                 <div className='sticky top-0 z-50 drop-shadow-md shadow-black bg-[#f3efef]'>
                     <TopBar />
-                    qweqwew
                 </div>
                 <main className='grow h-auto min-h-[100dvh]'>
                     <div className='w-full h-full'>
@@ -302,7 +302,7 @@ export const AppLayout = () => {
                     </div>
                     <div id='product-section' className='w-full h-full bg-white pl-20 pr-20 pb-20 pt-10 max-sm:pl-10 max-sm:pr-10 max-sm:pb-10'>
                         <div className='grid 2xl:grid-cols-5 lg:grid-cols-4 gap-6 max-sm:grid-cols-1'>
-                        {techStackData.map((product, key) => {
+                        {/* {techStackData.map((product, key) => {
                             // Filter reviews based on the current productId
                             const productReviews = productReview.filter(review => review.productId === product.productId);
                             return (
@@ -325,7 +325,8 @@ export const AppLayout = () => {
                                     />
                                 </div>
                             );
-                        })}
+                        })} */}
+                        <Dashboard />
                         </div>
                     </div>
                     <Outlet />
