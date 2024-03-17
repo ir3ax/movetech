@@ -6,7 +6,7 @@ export const Dashboard = () => {
     
     return (
         <div className='w-full h-full bg-[#f9fbfc] min-h-[100dvh]'>
-            <div className='bg-[#8265FF] min-h-16'>
+            <div className='bg-[#172539] min-h-16'>
                 <DashboardTopBar />
             </div>
             <div className='flex gap-4'>

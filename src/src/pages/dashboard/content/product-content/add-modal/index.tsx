@@ -1,10 +1,10 @@
-import { Modal } from "../../../../../components/modal";
-import { IoIosClose } from "react-icons/io";
-import { ProductName } from "./product-name-price";
-import { ProductImages } from "./product-images";
-import { ProductDescription } from "./product-description";
-import { ProductFreebies } from "./product-freebies";
-import Stepper from "../../../../../components/stepper";
+import { Modal } from '../../../../../components/modal';
+import { IoIosClose } from 'react-icons/io';
+import { ProductName } from './product-name-price';
+import { ProductImages } from './product-images';
+import { ProductDescription } from './product-description';
+import { ProductFreebies } from './product-freebies';
+import Stepper from '../../../../../components/stepper';
 
 interface Xprox {
     isVisible: boolean;
@@ -21,27 +21,27 @@ export const ModalView = (props: Xprox) => {
               </button>
               <div className='mt-6 w-full h-full'>
               <Stepper
-                    strokeColor="#17253975"
-                    fillStroke="#172539"
-                    activeColor="#172539"
-                    activeProgressBorder="2px solid #17253975"
-                    submitBtn={<button className="stepperBtn">Submit</button>}
-                    continueBtn={<button className="stepperBtn">Next</button>}
-                    backBtn={<button className="stepperBtn">Back</button>}
+                    strokeColor='#17253975'
+                    fillStroke='#172539'
+                    activeColor='#172539'
+                    activeProgressBorder='2px solid #17253975'
+                    submitBtn={<button className='stepperBtn'>Submit</button>}
+                    continueBtn={<button className='stepperBtn'>Next</button>}
+                    backBtn={<button className='stepperBtn'>Back</button>}
                     onSubmit={
                         (step) => alert(`Thank you!!! Final Step -> ${step}`)
                     }
                     >
-                    <div className="stepperSubDiv">
+                    <div className='stepperSubDiv'>
                         <ProductName />
                     </div>
-                    <div className="stepperSubDiv">
+                    <div className='stepperSubDiv'>
                         <ProductImages />
                     </div>
-                    <div className="stepperSubDiv">
+                    <div className='stepperSubDiv'>
                         <ProductDescription />
                     </div>
-                    <div className="stepperSubDiv">
+                    <div className='stepperSubDiv'>
                         <ProductFreebies />
                     </div>
                     </Stepper>

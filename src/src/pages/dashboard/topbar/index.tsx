@@ -11,7 +11,7 @@ export const DashboardTopBar = () => {
                     MoveTech
                 </div>
                 <button className='w-full flex flex-1 justify-end items-end cursor-pointer'>
-                    <FaGear className='w-6 h-6 text-gray-300 hover:text-gray-700 focus:text-gray-700 active:text-gray-700' />
+                    <FaGear className='w-6 h-6 text-gray-300 hover:text-gray-500 focus:text-gray-500 active:text-gray-500' />
                 </button>
             </div>
         </nav>

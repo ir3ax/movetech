@@ -4,6 +4,7 @@ public.movetech_product_data (
     img_name text null,
     img JSONB null,
     discount double precision null,
+    supplier_price double precision null,
     original_price double precision null,
     discounted_price double precision null,
     description1 text null,
