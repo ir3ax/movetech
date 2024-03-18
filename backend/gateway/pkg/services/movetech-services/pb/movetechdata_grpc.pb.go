@@ -23,7 +23,6 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MoveTechAdminProtoServiceClient interface {
 	SaveProduct(ctx context.Context, in *SaveProductRequest, opts ...grpc.CallOption) (*SaveProductResponse, error)
-	SaveFreebies(ctx context.Context, in *SaveFreebiesRequest, opts ...grpc.CallOption) (*SaveFreebiesResponse, error)
 }
 
 type moveTechAdminProtoServiceClient struct {
@@ -43,21 +42,11 @@ func (c *moveTechAdminProtoServiceClient) SaveProduct(ctx context.Context, in *S
 	return out, nil
 }
 
-func (c *moveTechAdminProtoServiceClient) SaveFreebies(ctx context.Context, in *SaveFreebiesRequest, opts ...grpc.CallOption) (*SaveFreebiesResponse, error) {
-	out := new(SaveFreebiesResponse)
-	err := c.cc.Invoke(ctx, "/api.MoveTechAdminProtoService/SaveFreebies", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // MoveTechAdminProtoServiceServer is the server API for MoveTechAdminProtoService service.
 // All implementations must embed UnimplementedMoveTechAdminProtoServiceServer
 // for forward compatibility
 type MoveTechAdminProtoServiceServer interface {
 	SaveProduct(context.Context, *SaveProductRequest) (*SaveProductResponse, error)
-	SaveFreebies(context.Context, *SaveFreebiesRequest) (*SaveFreebiesResponse, error)
 	mustEmbedUnimplementedMoveTechAdminProtoServiceServer()
 }
 
@@ -67,9 +56,6 @@ type UnimplementedMoveTechAdminProtoServiceServer struct {
 
 func (UnimplementedMoveTechAdminProtoServiceServer) SaveProduct(context.Context, *SaveProductRequest) (*SaveProductResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SaveProduct not implemented")
-}
-func (UnimplementedMoveTechAdminProtoServiceServer) SaveFreebies(context.Context, *SaveFreebiesRequest) (*SaveFreebiesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SaveFreebies not implemented")
 }
 func (UnimplementedMoveTechAdminProtoServiceServer) mustEmbedUnimplementedMoveTechAdminProtoServiceServer() {
 }
@@ -103,24 +89,6 @@ func _MoveTechAdminProtoService_SaveProduct_Handler(srv interface{}, ctx context
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MoveTechAdminProtoService_SaveFreebies_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SaveFreebiesRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MoveTechAdminProtoServiceServer).SaveFreebies(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/api.MoveTechAdminProtoService/SaveFreebies",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MoveTechAdminProtoServiceServer).SaveFreebies(ctx, req.(*SaveFreebiesRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // MoveTechAdminProtoService_ServiceDesc is the grpc.ServiceDesc for MoveTechAdminProtoService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -131,10 +99,6 @@ var MoveTechAdminProtoService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SaveProduct",
 			Handler:    _MoveTechAdminProtoService_SaveProduct_Handler,
-		},
-		{
-			MethodName: "SaveFreebies",
-			Handler:    _MoveTechAdminProtoService_SaveFreebies_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

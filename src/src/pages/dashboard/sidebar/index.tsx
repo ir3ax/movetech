@@ -4,6 +4,7 @@ import { LuLayoutDashboard } from "react-icons/lu";
 import { TfiPackage } from "react-icons/tfi";
 import { BiCartDownload } from "react-icons/bi";
 import { IoStarHalfOutline } from "react-icons/io5";
+import { GoGift } from "react-icons/go";
 import { contentAtom } from "../../../atom/contentAtom";
 
 export const DashboardSideBar = () => {
@@ -18,6 +19,10 @@ export const DashboardSideBar = () => {
     {
       icons: <TfiPackage className='w-6 h-6' />,
       name: "Product",
+    },
+    {
+      icons: <GoGift className='w-6 h-6' />,
+      name: "Freebies",
     },
     {
       icons: <BiCartDownload className='w-6 h-6' />,

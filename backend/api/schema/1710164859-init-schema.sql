@@ -13,11 +13,26 @@ public.movetech_product_data (
     current_quantity double precision null,
     product_status text null,
     product_sold double precision null,
-    product_freebies JSONB null,
+    product_freebies uuid null,
     created_by uuid null,
     created_at timestamp with time zone null,
     updated_by uuid null,
     updated_at timestamp with time zone null,
     deleted_at timestamp with time zone null,
-    constraint pdf_extractor_data_pkey primary key (product_id)
+    constraint movetech_product_data_pkey primary key (product_id)
+) tablespace pg_default;
+
+create table if not exists
+public.movetech_product_freebies (
+    freebies_id uuid not null default gen_random_uuid(),
+    freebies_name text null,
+    freebies_image text null,
+    freebies_original_quantity double precision null,
+    freebies_current_quantity double precision null,
+    created_by uuid null,
+    created_at timestamp with time zone null,
+    updated_by uuid null,
+    updated_at timestamp with time zone null,
+    deleted_at timestamp with time zone null,
+    constraint movetech_product_freebies_pkey primary key (freebies_id)
 ) tablespace pg_default;

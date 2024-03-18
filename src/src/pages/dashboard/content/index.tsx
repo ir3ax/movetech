@@ -4,6 +4,7 @@ import { DashboardContent } from "./dashboard-content";
 import { ProductContent } from "./product-content";
 import { ReviewsContent } from "./reviews-content";
 import { OrderContent } from "./order-content";
+import { FreebiesContent } from "./freebies-content";
 
 
 export const MainContent = () => {
@@ -18,6 +19,9 @@ export const MainContent = () => {
                 :
                 contentAtomValue === 'Product' ?
                 <ProductContent />
+                :
+                contentAtomValue === 'Freebies' ?
+                <FreebiesContent />
                 :
                 contentAtomValue === 'Reviews' ?
                 <ReviewsContent />

@@ -15,7 +15,7 @@ type MoveTechAdminService struct {
 	DB *gorm.DB
 }
 
-func InitPDFExtractorService(db *gorm.DB) *MoveTechAdminService {
+func InitMoveTechService(db *gorm.DB) *MoveTechAdminService {
 	return &MoveTechAdminService{DB: db}
 }
 
@@ -44,6 +44,7 @@ func (s *MoveTechAdminService) SaveProduct(ctx context.Context, req *pb.SaveProd
 		ImgName:          req.ImgName,
 		Img:              json.RawMessage(img),
 		Discount:         req.Discount,
+		SupplierPrice:    req.SupplierPrice,
 		OriginalPrice:    req.OriginalPrice,
 		DiscountedPrice:  req.DiscountedPrice,
 		Description1:     req.Description1,

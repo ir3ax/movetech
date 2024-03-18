@@ -25,9 +25,9 @@ func main() {
 		log.Fatalf("Failed to initialize database: %v", err)
 	}
 
-	PDFExtractorSvc := services.InitPDFExtractorService(database)
+	MovetechSvc := services.InitMoveTechService(database)
 
-	grpcServer, listener, err := startServer(PDFExtractorSvc, port)
+	grpcServer, listener, err := startServer(MovetechSvc, port)
 
 	if err != nil {
 		log.Fatalf("Failed to start gRPC server: %v", err)
@@ -69,7 +69,7 @@ func getPort(env *viper.Viper) string {
 	return env.GetString("PORT")
 }
 
-func startServer(PDFExtractorSvc *services.MoveTechAdminService, port string) (*grpc.Server, net.Listener, error) {
+func startServer(MovetechSvc *services.MoveTechAdminService, port string) (*grpc.Server, net.Listener, error) {
 	listener, err := net.Listen("tcp", ":"+port)
 
 	if err != nil {
@@ -78,7 +78,7 @@ func startServer(PDFExtractorSvc *services.MoveTechAdminService, port string) (*
 
 	grpcServer := grpc.NewServer()
 
-	pb.RegisterMoveTechAdminProtoServiceServer(grpcServer, PDFExtractorSvc)
+	pb.RegisterMoveTechAdminProtoServiceServer(grpcServer, MovetechSvc)
 
 	return grpcServer, listener, nil
 }

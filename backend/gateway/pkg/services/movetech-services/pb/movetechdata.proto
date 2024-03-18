@@ -6,7 +6,6 @@ option go_package = "./pkg/pb";
 
 service MoveTechAdminProtoService {
     rpc SaveProduct(SaveProductRequest) returns (SaveProductResponse) {}
-    rpc SaveFreebies(SaveFreebiesRequest) returns (SaveFreebiesResponse) {}
     // rpc GetPDFDataByStatus(GetPDFDataByStatusRequest) returns (GetPDFDataByStatusResponse);
     // rpc UpdateSaveFileByID (UpdateSaveFileByIDRequest) returns (CreatePdfExtractorResponse) {}
     // rpc UpdateSaveFileStatus (UpdateSaveFileStatusRequest) returns (CreatePdfExtractorResponse) {}
@@ -54,29 +53,6 @@ message SaveProductRequest {
 
 message SaveProductResponse {
     ProductData productData = 1;
-}
-
-message FreebiesData {
-    string freebiesId = 1;
-    string freebiesName = 2;
-    string freebiesImg = 3;
-    double freebiesOriginalQuantity = 4;
-    double freebiesCurrentQuantity = 5;
-    string createdBy = 6;
-    int64 createdAt = 7;
-    string updatedBy = 8;
-    int64 updatedAt = 9;
-}
-
-message SaveFreebiesRequest {
-    string freebiesName = 1;
-    string freebiesImg = 2;
-    double freebiesOriginalQuantity = 3;
-    double freebiesCurrentQuantity = 4;
-}
-
-message SaveFreebiesResponse {
-    FreebiesData freebiesData = 1;
 }
 
 // message GetPDFDataByStatusRequest {

@@ -13,6 +13,7 @@ type ProductData struct {
 	ImgName          string          `gorm:"type:text"`
 	Img              json.RawMessage `gorm:"type:jsonb"`
 	Discount         float64         `gorm:"type:decimal(10, 2);"`
+	SupplierPrice    float64         `gorm:"type:decimal(10, 2);"`
 	OriginalPrice    float64         `gorm:"type:decimal(10, 2);"`
 	DiscountedPrice  float64         `gorm:"type:decimal(10, 2);"`
 	Description1     string          `gorm:"type:text"`
@@ -58,6 +59,14 @@ func (p ProductData) GetDiscount() float64 {
 	}
 
 	return p.Discount
+}
+
+func (p ProductData) GetSupplierPrice() float64 {
+	if p.SupplierPrice == 0 {
+		p.SupplierPrice = 0
+	}
+
+	return p.SupplierPrice
 }
 
 func (p ProductData) GetOriginalPrice() float64 {
