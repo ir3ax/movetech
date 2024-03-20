@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"strings"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -119,6 +120,26 @@ func (s *MoveTechAdminService) SaveFreebies(ctx context.Context, req *pb.SaveFre
 	return response, nil
 }
 
+func convertSortOption(sortOptionStr string) pb.SortOption {
+	switch strings.ToUpper(sortOptionStr) {
+	case "ATOZ":
+		return pb.SortOption_ATOZ
+	case "ZTOA":
+		return pb.SortOption_ZTOA
+	case "PRICE_HIGH_TO_LOW":
+		return pb.SortOption_PRICE_HIGH_TO_LOW
+	case "PRICE_LOW_TO_HIGH":
+		return pb.SortOption_PRICE_LOW_TO_HIGH
+	case "QUANTITY_HIGH_TO_LOW":
+		return pb.SortOption_QUANTITY_HIGH_TO_LOW
+	case "QUANTITY_LOW_TO_HIGH":
+		return pb.SortOption_QUANTITY_LOW_TO_HIGH
+	default:
+		// Return a default sort option here if needed
+		return pb.SortOption_ATOZ // Defaulting to A to Z sorting
+	}
+}
+
 func (s *MoveTechAdminService) GetAllFreebies(ctx context.Context, req *pb.GetAllFreebiesRequest) (*pb.GetAllFreebiesResponse, error) {
 	response := &pb.GetAllFreebiesResponse{
 		FreebiesData: []*pb.FreebiesData{},
@@ -127,8 +148,11 @@ func (s *MoveTechAdminService) GetAllFreebies(ctx context.Context, req *pb.GetAl
 	// Build your query based on the request parameters
 	query := s.DB.Model(&models.FreebiesData{})
 
+	// Convert sort option string to enum value
+	sortOption := convertSortOption(req.SortOption)
+
 	// Handle sorting
-	switch req.SortOption {
+	switch sortOption {
 	case pb.SortOption_ATOZ:
 		query = query.Order("freebies_name ASC")
 	case pb.SortOption_ZTOA:
@@ -145,7 +169,7 @@ func (s *MoveTechAdminService) GetAllFreebies(ctx context.Context, req *pb.GetAl
 
 	// Handle searching
 	if req.Search != "" {
-		query = query.Where("freebies_name LIKE ?", "%"+req.Search+"%")
+		query = query.Where("freebies_name ILIKE ?", "%"+req.Search+"%")
 	}
 
 	// Execute the query

@@ -1,5 +1,5 @@
 import { axiosInstance } from "../axios";
-import { SaveFreebiesRequest, SaveFreebiesResponse } from "./schema";
+import { GetAllFreebiesResponse, SaveFreebiesRequest, SaveFreebiesResponse } from "./schema";
 
 export const saveFreebies = async (data: SaveFreebiesRequest) => {
     // Convert freebiesImg to base64 string
@@ -31,6 +31,14 @@ const fileToBase64 = (file: File): Promise<string> => {
         reader.onerror = error => reject(error);
     });
 };
+
+export const getAllFreebies = async (sort: string, search: string = '') => {
+    const response = await axiosInstance.get(`admin/freebies-sort/${sort}`, {
+        params: { search }
+    });
+    return response.data as GetAllFreebiesResponse;
+};
+
 
 
 // export const saveFreebies = async (data: SaveFreebiesRequest) => {

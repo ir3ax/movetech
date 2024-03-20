@@ -50,7 +50,7 @@ export const DashboardSideBar = () => {
             <button
               onClick={() => setContentAtomValue(item.name)}
               key={index}
-              className={`w-full flex justify-start items-start gap-4 p-4 text-${contentAtomValue === item.name ? '[#63B38F]' : '[#c9c7c7]'} hover:text-[#63B38F] active:text-[#63B38F] focus:text-[#63B38F]`}
+              className={`w-full flex justify-start items-start gap-4 p-4 ${contentAtomValue === item.name ? 'text-[#63B38F]' : 'text-[#c9c7c7]'} hover:text-[#63B38F] active:text-[#63B38F] focus:text-[#63B38F]`}
             >
               {item.icons}
               <span>{item.name}</span>

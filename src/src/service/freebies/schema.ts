@@ -27,19 +27,28 @@ export const saveFreebiesRequest = z.object({
 });
 
 export const saveFreebiesResponse = z.object({
-    freebiesData: z.object({
-		freebiesId:               z.string(),
-		freebiesName: 	          z.string(),
-		freebiesImg:              z.string(),
-        freebiesStorePrice:       z.number(),
-		freebiesOriginalQuantity: z.number(),
-		freebiesCurrentQuantity:  z.number(),
-        createdBy: 	              z.string(),
-		createdAt: 	              z.string(),
-		updatedBy:	              z.string(),
-		updatedAt:	              z.string(),
-	})
+    freebiesData: z.array(z.object({
+        freebiesId: z.string(),
+        freebiesName: z.string(),
+        freebiesImg: z.string(),
+        freebiesStorePrice: z.number(),
+        freebiesOriginalQuantity: z.number(),
+        freebiesCurrentQuantity: z.number(),
+        createdBy: z.string(),
+        createdAt: z.string(),
+        updatedBy: z.string(),
+        updatedAt: z.string(),
+    })),
 });
 
 export type SaveFreebiesRequest   = z.infer<typeof saveFreebiesRequest>;
 export type SaveFreebiesResponse  = z.infer<typeof saveFreebiesResponse>;
+
+
+export const getAllFreebiesRequest = z.object({
+    search: z.string().optional(),
+    sortOption: z.string().optional(),
+});
+
+export type GetAllFreebiesRequest   = z.infer<typeof getAllFreebiesRequest>;
+export type GetAllFreebiesResponse  = SaveFreebiesResponse;

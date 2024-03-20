@@ -8,8 +8,14 @@ import (
 )
 
 func GetAllFreebies(c *gin.Context, s pb.MoveTechAdminProtoServiceClient) {
-	// Call the company service
-	freebies, err := s.GetAllFreebies(c, &pb.GetAllFreebiesRequest{})
+
+	sort := c.Param("sort")
+	search := c.Query("search")
+
+	freebiesDetailsRes, err := s.GetAllFreebies(c, &pb.GetAllFreebiesRequest{
+		Search:     search,
+		SortOption: sort,
+	})
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -18,5 +24,5 @@ func GetAllFreebies(c *gin.Context, s pb.MoveTechAdminProtoServiceClient) {
 		return
 	}
 
-	c.JSON(http.StatusOK, freebies.FreebiesData)
+	c.JSON(http.StatusOK, freebiesDetailsRes)
 }

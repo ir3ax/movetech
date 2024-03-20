@@ -85,12 +85,16 @@ message SaveFreebiesResponse {
 
 message GetAllFreebiesRequest {
     string search = 1;
-    string sortAtoZ = 2;
-    string sortZtoA = 3;
-    string sortPriceHighToLow = 4;
-    string sortPriceLowToHigh = 5;
-    string sortQuantityHighToLow = 6;
-    string sortQuantityLowToHigh = 7;
+    string sortOption = 2;
+}
+
+enum SortOption {
+    ATOZ = 0;
+    ZTOA = 1;
+    PRICE_HIGH_TO_LOW = 2;
+    PRICE_LOW_TO_HIGH = 3;
+    QUANTITY_HIGH_TO_LOW = 4;
+    QUANTITY_LOW_TO_HIGH = 5;
 }
 
 message GetAllFreebiesResponse {

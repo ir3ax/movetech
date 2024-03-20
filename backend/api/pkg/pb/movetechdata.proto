@@ -85,7 +85,7 @@ message SaveFreebiesResponse {
 
 message GetAllFreebiesRequest {
     string search = 1;
-    SortOption sort_option = 2;
+    string sortOption = 2;
 }
 
 enum SortOption {
