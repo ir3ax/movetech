@@ -26,7 +26,8 @@ create table if not exists
 public.movetech_product_freebies (
     freebies_id uuid not null default gen_random_uuid(),
     freebies_name text null,
-    freebies_image text null,
+    freebies_img bytea null,
+    freebies_store_price double precision null,
     freebies_original_quantity double precision null,
     freebies_current_quantity double precision null,
     created_by uuid null,

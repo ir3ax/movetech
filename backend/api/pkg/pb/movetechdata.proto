@@ -7,6 +7,8 @@ option go_package = "./pkg/pb";
 service MoveTechAdminProtoService {
     rpc SaveProduct(SaveProductRequest) returns (SaveProductResponse) {}
     rpc SaveFreebies(SaveFreebiesRequest) returns (SaveFreebiesResponse) {}
+    rpc GetAllFreebies (GetAllFreebiesRequest) returns (GetAllFreebiesResponse) {}
+    rpc GetAllFreebiesById (GetAllFreebiesRequestById) returns (GetAllFreebiesResponseById) {}
     // rpc GetPDFDataByStatus(GetPDFDataByStatusRequest) returns (GetPDFDataByStatusResponse);
     // rpc UpdateSaveFileByID (UpdateSaveFileByIDRequest) returns (CreatePdfExtractorResponse) {}
     // rpc UpdateSaveFileStatus (UpdateSaveFileStatusRequest) returns (CreatePdfExtractorResponse) {}
@@ -59,25 +61,54 @@ message SaveProductResponse {
 message FreebiesData {
     string freebiesId = 1;
     string freebiesName = 2;
-    string freebiesImg = 3;
-    double freebiesOriginalQuantity = 4;
-    double freebiesCurrentQuantity = 5;
-    string createdBy = 6;
-    int64 createdAt = 7;
-    string updatedBy = 8;
-    int64 updatedAt = 9;
+    bytes freebiesImg = 3;
+    double freebiesStorePrice = 4;
+    double freebiesOriginalQuantity = 5;
+    double freebiesCurrentQuantity = 6;
+    string createdBy = 7;
+    int64 createdAt = 8;
+    string updatedBy = 9;
+    int64 updatedAt = 10;
 }
 
 message SaveFreebiesRequest {
     string freebiesName = 1;
-    string freebiesImg = 2;
-    double freebiesOriginalQuantity = 3;
-    double freebiesCurrentQuantity = 4;
+    bytes freebiesImg = 2;
+    double freebiesStorePrice = 3;
+    double freebiesOriginalQuantity = 4;
+    double freebiesCurrentQuantity = 5;
 }
 
 message SaveFreebiesResponse {
     FreebiesData freebiesData = 1;
 }
+
+message GetAllFreebiesRequest {
+    string search = 1;
+    SortOption sort_option = 2;
+}
+
+enum SortOption {
+    ATOZ = 0;
+    ZTOA = 1;
+    PRICE_HIGH_TO_LOW = 2;
+    PRICE_LOW_TO_HIGH = 3;
+    QUANTITY_HIGH_TO_LOW = 4;
+    QUANTITY_LOW_TO_HIGH = 5;
+}
+
+message GetAllFreebiesResponse {
+    repeated FreebiesData freebiesData = 1;
+}
+
+message GetAllFreebiesRequestById {
+    string freebiesId = 1;
+}
+
+message GetAllFreebiesResponseById {
+    repeated FreebiesData freebiesData = 1;
+}
+
 
 // message GetPDFDataByStatusRequest {
 //     string csvStatus = 1;

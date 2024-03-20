@@ -10,7 +10,8 @@ import (
 type FreebiesData struct {
 	FreebiesId               uuid.UUID      `gorm:"type:uuid;primaryKey;default:uuid_generate_v4()"`
 	FreebiesName             string         `gorm:"type:text"`
-	FreebiesImg              string         `gorm:"type:text"`
+	FreebiesImg              []byte         `gorm:"type:bytea"`
+	FreebiesStorePrice       float64        `gorm:"type:decimal(10, 2);"`
 	FreebiesOriginalQuantity float64        `gorm:"type:decimal(10, 2);"`
 	FreebiesCurrentQuantity  float64        `gorm:"type:decimal(10, 2);"`
 	CreatedBy                uuid.UUID      `gorm:"type:uuid"`
@@ -40,11 +41,20 @@ func (p FreebiesData) GetFreebiesName() string {
 }
 
 func (p FreebiesData) GetFreebiesImg() string {
-	if p.FreebiesImg == "" {
+	if len(p.FreebiesImg) == 0 {
 		return ""
 	}
 
-	return p.FreebiesImg
+	// Convert byte slice to string if needed
+	return string(p.FreebiesImg)
+}
+
+func (p FreebiesData) GetFreebiesStorePrice() float64 {
+	if p.FreebiesStorePrice == 0 {
+		p.FreebiesStorePrice = 0
+	}
+
+	return p.FreebiesStorePrice
 }
 
 func (p FreebiesData) GetFreebiesOriginalQuantity() float64 {

@@ -4,13 +4,12 @@ import { Input } from '../../../../../../components/input';
 interface Freebie {
   freebiesCode: string;
   freebiesName: string;
-  freebiesImg: File | null;
+  freebiesImg: string;
 }
 
 export const ProductFreebies = () => {
   const [freebies, setFreebies] = useState<Freebie[]>([]);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  console.log(freebies)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
@@ -34,7 +33,7 @@ export const ProductFreebies = () => {
     if (freebiesCodeElement && freebiesNameElement && fileInput.files && fileInput.files.length > 0) {
       const freebiesCode = freebiesCodeElement.value;
       const freebiesName = freebiesNameElement.value;
-      const freebiesImg = fileInput.files[0];
+      const freebiesImg = fileInput.value;
       const newFreebie = {
         freebiesCode,
         freebiesName,
