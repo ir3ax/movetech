@@ -1,5 +1,5 @@
 import { axiosInstance } from "../axios";
-import { GetAllFreebiesResponse, SaveFreebiesRequest, SaveFreebiesResponse } from "./schema";
+import { DeleteFreebiesRequest, DeleteFreebiesResponse, GetAllFreebiesResponse, SaveFreebiesRequest, SaveFreebiesResponse, UpdateFreebiesRequest, UpdateFreebiesResponse, UpdateQuantityFreebiesRequest, UpdateQuantityFreebiesResponse } from "./schema";
 
 export const saveFreebies = async (data: SaveFreebiesRequest) => {
     // Convert freebiesImg to base64 string
@@ -39,6 +39,42 @@ export const getAllFreebies = async (sort: string, search: string = '') => {
     return response.data as GetAllFreebiesResponse;
 };
 
+
+export const updateFreebies = async (data: UpdateFreebiesRequest) => {
+    // Convert freebiesImg to base64 string
+    const base64Img = data.freebiesImg instanceof File ? await fileToBase64(data.freebiesImg) : undefined;
+    
+    // Create a new object with base64Img instead of File object
+    const requestData = {
+        ...data,
+        freebiesImg: base64Img,
+    };
+
+    const response = await axiosInstance.put(`admin/freebies-update`, requestData);
+    return response.data as UpdateFreebiesResponse;
+};
+
+export const updateFreebiesQuantity = async (data: UpdateQuantityFreebiesRequest) => {
+ 
+    // Create a new object with base64Img instead of File object
+    const requestData = {
+    ...data,
+    };
+
+    const response = await axiosInstance.put(`admin/freebies-update-quantity`, requestData);
+    return response.data as UpdateQuantityFreebiesResponse;
+};
+
+export const deleteFreebies = async (data: DeleteFreebiesRequest) => {
+ 
+    // Create a new object with base64Img instead of File object
+    const requestData = {
+    ...data,
+    };
+
+    const response = await axiosInstance.put(`admin/freebies-update-status`, requestData);
+    return response.data as DeleteFreebiesResponse;
+};
 
 
 // export const saveFreebies = async (data: SaveFreebiesRequest) => {

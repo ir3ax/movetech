@@ -15,3 +15,8 @@ export const freebiesAtom = atom<Freebie>({
     freebiesCurrent: 0,
     freebiesImg: null, // Set initial state to null or undefined
 });
+
+export const additionalOriginalQuantity = atom<number>(0);
+export const additionalCurrentQuantity = atom<number>(0);
+
+export const storePriceInputValueAtom = atom<string | null | undefined | number>(null);

@@ -6,11 +6,10 @@ import { AxiosError } from 'axios';
 import { SaveFreebiesRequest, SaveFreebiesResponse, saveFreebiesRequest } from '../../../../../service/freebies/schema';
 import { saveFreebies } from '../../../../../service/freebies';
 import { useForm } from 'react-hook-form'
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form } from '../../../../../components/ui/form';
-// import { useAtom } from 'jotai';
-// import { freebiesAtom } from '../../../../../atom/freebiesAtom';
+import { toast } from 'react-toastify';
 
 interface Xprox {
     isVisible: boolean;
@@ -18,6 +17,9 @@ interface Xprox {
 }
 
 export const ModalView = (props: Xprox) => {
+
+  const queryClient = useQueryClient();
+  const notify = () => toast.success("Successfully added!");
 
   const freebiesForm = useForm<SaveFreebiesRequest>({
     defaultValues: {
@@ -36,8 +38,10 @@ export const ModalView = (props: Xprox) => {
     AxiosError,
     SaveFreebiesRequest
   >((data) => saveFreebies(data), {
-    onSuccess: (res: unknown) => {
-      console.log(res)
+    onSuccess: () => {
+      queryClient.invalidateQueries('freebies-data');
+      notify()
+      props.handleClose()
     },
     onError: (error: unknown) => {
     console.log(error);
@@ -52,7 +56,7 @@ export const ModalView = (props: Xprox) => {
         freebiesImg: data.freebiesImg,
         freebiesStorePrice: data.freebiesStorePrice,
         freebiesOriginalQuantity: data.freebiesOriginalQuantity,
-        freebiesCurrentQuantity: data.freebiesCurrentQuantity
+        freebiesCurrentQuantity: data.freebiesOriginalQuantity
     };
     saveFreebiesMu(params);
 };
@@ -62,10 +66,10 @@ export const ModalView = (props: Xprox) => {
       <Modal open={props.isVisible} onClose={props.handleClose}>
         <div className='flex flex-col justify-start w-[66rem] h-[36rem] bg-white p-8 overflow-auto'>
               <button onClick={props.handleClose} className='flex justify-end items-end w-full'>
-                <IoIosClose  className='w-6 h-6 text-[#808080] cursor-pointer' />
+                <IoIosClose  className='w-8 h-8 text-[#808080] cursor-pointer' />
               </button>
               <Form {...freebiesForm}>
-                <form onSubmit={freebiesForm.handleSubmit(handleSaveFreebies)} className='mt-6 w-full h-full'>
+                <form onSubmit={freebiesForm.handleSubmit(handleSaveFreebies)} className='mt-2 w-full h-full'>
                 <Stepper
                       strokeColor='#17253975'
                       fillStroke='#172539'
@@ -74,9 +78,6 @@ export const ModalView = (props: Xprox) => {
                       submitBtn={<button className='stepperBtn'>Submit</button>}
                       continueBtn={<button className='stepperBtn'>Next</button>}
                       backBtn={<button className='stepperBtn'>Back</button>}
-                      onSubmit={
-                          (step) => alert(`Thank you!!! Final Step -> ${step}`)
-                      }
                       >
                       <div className='stepperSubDiv'>
                           <FreebiesModal />

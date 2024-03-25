@@ -30,6 +30,7 @@ public.movetech_product_freebies (
     freebies_store_price double precision null,
     freebies_original_quantity double precision null,
     freebies_current_quantity double precision null,
+    freebies_status text null,
     created_by uuid null,
     created_at timestamp with time zone null,
     updated_by uuid null,

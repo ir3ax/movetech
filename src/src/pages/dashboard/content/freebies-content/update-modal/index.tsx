@@ -1,0 +1,104 @@
+import { Modal } from '../../../../../components/modal';
+import { IoIosClose } from 'react-icons/io';
+import Stepper from '../../../../../components/stepper';
+import { FreebiesModalUpdate } from './freebies';
+import { AxiosError } from 'axios';
+import { UpdateFreebiesRequest, UpdateFreebiesResponse, updateFreebiesRequest } from '../../../../../service/freebies/schema';
+import { updateFreebies } from '../../../../../service/freebies';
+import { useForm } from 'react-hook-form'
+import { useMutation, useQueryClient } from 'react-query';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Form } from '../../../../../components/ui/form';
+import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+interface Xprox {
+    isVisible: boolean;
+    handleClose: () => void;
+    freebiesId: string;
+    freebiesName: string;
+    freebiesImg: string;
+    freebiesStorePrice: number;
+}
+
+export const ModalViewUpdate = (props: Xprox) => {
+
+  const freebiesId = props.freebiesId ? props.freebiesId : uuidv4();
+  const queryClient = useQueryClient();
+  const notify = () => toast.success("Successfully updated!");
+
+  const freebiesFormUpdate = useForm<UpdateFreebiesRequest>({
+    defaultValues: {
+        freebiesId: freebiesId,
+        freebiesName: props.freebiesName,
+        freebiesImg: props.freebiesImg,
+        freebiesStorePrice: props.freebiesStorePrice,
+    },
+    mode: 'onChange',
+    resolver: zodResolver(updateFreebiesRequest),
+  });
+
+  const { isDirty } = freebiesFormUpdate.formState;
+
+  const { mutate: updateFreebiesMU } = useMutation<
+    UpdateFreebiesResponse,
+    AxiosError,
+    UpdateFreebiesRequest
+  >((data) => updateFreebies(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('freebies-data');
+      notify()
+      freebiesFormUpdate.reset();
+      props.handleClose()
+    },
+    onError: (error: unknown) => {
+    console.log(error);
+  },
+  });
+
+  const handleUpdateFreebies = async (data: UpdateFreebiesRequest) => {
+    const params: UpdateFreebiesRequest = {
+        freebiesId: freebiesId,
+        freebiesName: data.freebiesName,
+        freebiesImg: data.freebiesImg,
+        freebiesStorePrice: data.freebiesStorePrice,
+    };
+    updateFreebiesMU(params);
+};
+
+// console.log(freebiesFormUpdate.getValues())
+// if(freebiesFormUpdate.getValues('freebiesName') === props.freebiesName || freebiesFormUpdate.getValues('freebiesStorePrice') === props.freebiesStorePrice || freebiesFormUpdate.getValues('freebiesImg') === props.freebiesImg){
+//   console.log('qweqweqeqeqe')
+// }else{
+//   console.log('asdasdasdasd')
+// }
+
+    return (
+      <Modal open={props.isVisible} onClose={props.handleClose}>
+        <div className='flex flex-col justify-start w-[66rem] h-[36rem] bg-white p-8 overflow-auto'>
+              <button onClick={props.handleClose} className='flex justify-end items-end w-full'>
+                <IoIosClose  className='w-8 h-8 text-[#808080] cursor-pointer' />
+              </button>
+              <Form {...freebiesFormUpdate}>
+                <form onSubmit={freebiesFormUpdate.handleSubmit(handleUpdateFreebies)} className='mt-6 w-full h-full'>
+                <Stepper
+                      strokeColor='#17253975'
+                      fillStroke='#172539'
+                      activeColor='#172539'
+                      activeProgressBorder='2px solid #17253975'
+                      submitBtn={<button className={`stepperBtn ${!isDirty ? 'opacity-55' : null}`} disabled={!isDirty}>Submit</button>}
+                      continueBtn={<button className='stepperBtn'>Next</button>}
+                      backBtn={<button className='stepperBtn'>Back</button>}
+                      >
+                      <div className='stepperSubDiv'>
+                          <FreebiesModalUpdate freebiesId={props.freebiesId} freebiesName={props.freebiesName} freebiesImg={props.freebiesImg} freebiesStorePrice={props.freebiesStorePrice} />
+                      </div>
+                      </Stepper>
+                </form>
+              </Form>
+        </div>
+      </Modal>
+    )
+}
+

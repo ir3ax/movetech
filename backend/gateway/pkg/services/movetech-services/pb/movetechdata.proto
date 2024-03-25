@@ -9,6 +9,9 @@ service MoveTechAdminProtoService {
     rpc SaveFreebies(SaveFreebiesRequest) returns (SaveFreebiesResponse) {}
     rpc GetAllFreebies (GetAllFreebiesRequest) returns (GetAllFreebiesResponse) {}
     rpc GetAllFreebiesById (GetAllFreebiesRequestById) returns (GetAllFreebiesResponseById) {}
+    rpc UpdateFreebies(UpdateFreebiesRequest) returns (UpdateFreebiesResponse) {}
+    rpc UpdateFreebiesQuantity(UpdateFreebiesQuantityRequest) returns (UpdateFreebiesQuantityResponse) {}
+    rpc UpdateFreebiesStatus(UpdateFreebiesStatusRequest) returns (UpdateFreebiesStatusResponse) {}
     // rpc GetPDFDataByStatus(GetPDFDataByStatusRequest) returns (GetPDFDataByStatusResponse);
     // rpc UpdateSaveFileByID (UpdateSaveFileByIDRequest) returns (CreatePdfExtractorResponse) {}
     // rpc UpdateSaveFileStatus (UpdateSaveFileStatusRequest) returns (CreatePdfExtractorResponse) {}
@@ -65,10 +68,11 @@ message FreebiesData {
     double freebiesStorePrice = 4;
     double freebiesOriginalQuantity = 5;
     double freebiesCurrentQuantity = 6;
-    string createdBy = 7;
-    int64 createdAt = 8;
-    string updatedBy = 9;
-    int64 updatedAt = 10;
+    string freebiesStatus = 7;
+    string createdBy = 8;
+    int64 createdAt = 9;
+    string updatedBy = 10;
+    int64 updatedAt = 11;
 }
 
 message SaveFreebiesRequest {
@@ -77,6 +81,7 @@ message SaveFreebiesRequest {
     double freebiesStorePrice = 3;
     double freebiesOriginalQuantity = 4;
     double freebiesCurrentQuantity = 5;
+    string freebiesStatus = 6;
 }
 
 message SaveFreebiesResponse {
@@ -109,6 +114,36 @@ message GetAllFreebiesResponseById {
     repeated FreebiesData freebiesData = 1;
 }
 
+message UpdateFreebiesRequest {
+    string freebiesId = 1;
+    string freebiesName = 2;
+    bytes freebiesImg = 3;
+    double freebiesStorePrice = 4;
+}
+
+message UpdateFreebiesResponse {
+    FreebiesData freebiesData = 1;
+}
+
+
+message UpdateFreebiesQuantityRequest {
+    string freebiesId = 1;
+    double freebiesOriginalQuantity = 2;
+    double freebiesCurrentQuantity = 3;
+}
+
+message UpdateFreebiesQuantityResponse {
+    FreebiesData freebiesData = 1;
+}
+
+message UpdateFreebiesStatusRequest {
+    string freebiesId = 1;
+    string freebiesStatus = 2;
+}
+
+message UpdateFreebiesStatusResponse {
+    FreebiesData freebiesData = 1;
+}
 
 // message GetPDFDataByStatusRequest {
 //     string csvStatus = 1;

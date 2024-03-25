@@ -15,6 +15,9 @@ func RegisterRoutes(r *gin.Engine, vi *viper.Viper) *MoveTechAdminProtoService {
 	movetechAdmin.POST("/freebies", gin.Bind(binding.SaveFreebiesRequest{}), svc.SaveFreebies)
 	movetechAdmin.GET("/freebies/:freebiesId", svc.GetAllFreebiesById)
 	movetechAdmin.GET("/freebies-sort/:sort", svc.GetAllFreebies)
+	movetechAdmin.PUT("/freebies-update", gin.Bind(binding.UpdateFreebiesRequest{}), svc.UpdateFreebies)
+	movetechAdmin.PUT("/freebies-update-quantity", gin.Bind(binding.UpdateFreebiesQuantityRequest{}), svc.UpdateFreebiesQuantity)
+	movetechAdmin.PUT("/freebies-update-status", gin.Bind(binding.UpdateFreebiesStatusRequest{}), svc.UpdateFreebiesStatus)
 
 	return svc
 }
@@ -29,4 +32,16 @@ func (svc *MoveTechAdminProtoService) GetAllFreebies(c *gin.Context) {
 
 func (svc *MoveTechAdminProtoService) GetAllFreebiesById(c *gin.Context) {
 	api.GetAllFreebiesById(c, svc.MoveTechAdminProtoServiceClient)
+}
+
+func (svc *MoveTechAdminProtoService) UpdateFreebies(c *gin.Context) {
+	api.UpdateFreebies(c, svc.MoveTechAdminProtoServiceClient)
+}
+
+func (svc *MoveTechAdminProtoService) UpdateFreebiesQuantity(c *gin.Context) {
+	api.UpdateFreebiesQuantity(c, svc.MoveTechAdminProtoServiceClient)
+}
+
+func (svc *MoveTechAdminProtoService) UpdateFreebiesStatus(c *gin.Context) {
+	api.UpdateFreebiesStatus(c, svc.MoveTechAdminProtoServiceClient)
 }

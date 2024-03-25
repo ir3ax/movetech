@@ -14,6 +14,7 @@ type FreebiesData struct {
 	FreebiesStorePrice       float64        `gorm:"type:decimal(10, 2);"`
 	FreebiesOriginalQuantity float64        `gorm:"type:decimal(10, 2);"`
 	FreebiesCurrentQuantity  float64        `gorm:"type:decimal(10, 2);"`
+	FreebiesStatus           string         `gorm:"type:text"`
 	CreatedBy                uuid.UUID      `gorm:"type:uuid"`
 	CreatedAt                time.Time      `gorm:"type:timestamptz;autoCreateTime"`
 	UpdatedBy                uuid.UUID      `gorm:"type:uuid"`
@@ -71,4 +72,12 @@ func (p FreebiesData) GetFreebiesCurrentQuantity() float64 {
 	}
 
 	return p.FreebiesCurrentQuantity
+}
+
+func (p FreebiesData) GetFreebiesStatus() string {
+	if p.FreebiesStatus == "" {
+		return ""
+	}
+
+	return p.FreebiesStatus
 }

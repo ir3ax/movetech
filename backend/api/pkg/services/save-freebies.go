@@ -20,73 +20,6 @@ import (
 
 func (s *MoveTechAdminService) SaveFreebies(ctx context.Context, req *pb.SaveFreebiesRequest) (*pb.SaveFreebiesResponse, error) {
 
-	// Decode base64 image data
-	// imgData, err := base64.StdEncoding.DecodeString(req.FreebiesImg)
-	// if err != nil {
-	// 	log.Printf("Error decoding base64 image: %v", err)
-	// 	return nil, err
-	// }
-
-	// // Create a temporary file to write the decoded image data
-	// tempFile, err := ioutil.TempFile("", "image")
-	// if err != nil {
-	// 	log.Printf("Error creating temporary file: %v", err)
-	// 	return nil, err
-	// }
-	// defer tempFile.Close()
-
-	// // Write the decoded image data to the temporary file
-	// if _, err := tempFile.Write(imgData); err != nil {
-	// 	log.Printf("Error writing to temporary file: %v", err)
-	// 	return nil, err
-	// }
-
-	// // cfg, err := config.LoadDefaultConfig(context.TODO())
-	// // if err != nil {
-	// // 	log.Printf("error: %v", err)
-	// // 	return nil, err
-	// // }
-
-	// // Load AWS credentials from environment variables
-	// awsCfg, err := external.LoadDefaultAWSConfig()
-	// if err != nil {
-	// 	log.Printf("error loading AWS config: %v", err)
-	// 	return nil, err
-	// }
-
-	// // Explicitly set the AWS region
-	// awsCfg.Region = "your-aws-region"
-
-	// // Disable EC2 IMDS endpoint
-	// awsCfg.DisableIMDSEndpoint = true
-
-	// cfg, err := config.LoadDefaultConfig(context.TODO(),
-	// 	config.WithCredentialsProvider(awsCfg.Credentials),
-	// 	config.WithRegion(awsCfg.Region),
-	// )
-	// if err != nil {
-	// 	log.Printf("error: %v", err)
-	// 	return nil, err
-	// }
-
-	// client := s3.NewFromConfig(cfg)
-	// uploader := manager.NewUploader(client)
-
-	// // Upload the temporary file to S3
-	// result, err := uploader.Upload(context.TODO(), &s3.PutObjectInput{
-	// 	Bucket: aws.String("movetech-freebies"),
-	// 	Key:    aws.String("unique_image_key"), // Provide a unique key for the image
-	// 	Body:   tempFile,
-	// 	ACL:    "public-read",
-	// })
-	// if err != nil {
-	// 	log.Printf("Error uploading image to S3: %v", err)
-	// 	return nil, err
-	// }
-
-	// // Construct S3 URL
-	// s3URL := "https://movetech-freebies.s3.amazonaws.com/" + *result.Key
-
 	// Create a new FreebiesData instance
 	freebiesData := models.FreebiesData{
 		FreebiesName:             req.FreebiesName,
@@ -94,6 +27,7 @@ func (s *MoveTechAdminService) SaveFreebies(ctx context.Context, req *pb.SaveFre
 		FreebiesStorePrice:       req.FreebiesStorePrice,
 		FreebiesOriginalQuantity: req.FreebiesOriginalQuantity,
 		FreebiesCurrentQuantity:  req.FreebiesCurrentQuantity,
+		FreebiesStatus:           "ACT",
 	}
 
 	// Save the data to the database using GORM
@@ -110,6 +44,7 @@ func (s *MoveTechAdminService) SaveFreebies(ctx context.Context, req *pb.SaveFre
 			FreebiesStorePrice:       freebiesData.FreebiesStorePrice,
 			FreebiesOriginalQuantity: freebiesData.FreebiesOriginalQuantity,
 			FreebiesCurrentQuantity:  freebiesData.FreebiesCurrentQuantity,
+			FreebiesStatus:           freebiesData.FreebiesStatus,
 			CreatedBy:                freebiesData.CreatedBy.String(),
 			CreatedAt:                freebiesData.CreatedAt.Unix(),
 			UpdatedBy:                freebiesData.UpdatedBy.String(),
@@ -172,6 +107,9 @@ func (s *MoveTechAdminService) GetAllFreebies(ctx context.Context, req *pb.GetAl
 		query = query.Where("freebies_name ILIKE ?", "%"+req.Search+"%")
 	}
 
+	// Filter by active status
+	query = query.Where("freebies_status = ?", "ACT")
+
 	// Execute the query
 	var freebiesDataValue []models.FreebiesData
 	if err := query.Find(&freebiesDataValue).Error; err != nil {
@@ -187,6 +125,7 @@ func (s *MoveTechAdminService) GetAllFreebies(ctx context.Context, req *pb.GetAl
 			FreebiesStorePrice:       data.FreebiesStorePrice,
 			FreebiesOriginalQuantity: data.FreebiesOriginalQuantity,
 			FreebiesCurrentQuantity:  data.FreebiesCurrentQuantity,
+			FreebiesStatus:           data.FreebiesStatus,
 			CreatedBy:                data.CreatedBy.String(),
 			CreatedAt:                data.CreatedAt.Unix(),
 			UpdatedBy:                data.UpdatedBy.String(),
@@ -202,9 +141,9 @@ func (s *MoveTechAdminService) GetAllFreebiesById(ctx context.Context, req *pb.G
 		FreebiesData: []*pb.FreebiesData{},
 	}
 
-	// Fetch the freebie by its ID
+	// Fetch the freebie by its ID and status
 	var freebie models.FreebiesData
-	if err := s.DB.Where("freebies_id = ?", req.FreebiesId).First(&freebie).Error; err != nil {
+	if err := s.DB.Where("freebies_id = ? AND freebies_status = ?", req.FreebiesId, "ACT").First(&freebie).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, status.Error(codes.NotFound, fmt.Sprintf("Freebies with ID %s not found", req.FreebiesId))
 		}
@@ -219,11 +158,138 @@ func (s *MoveTechAdminService) GetAllFreebiesById(ctx context.Context, req *pb.G
 		FreebiesStorePrice:       freebie.FreebiesStorePrice,
 		FreebiesOriginalQuantity: freebie.FreebiesOriginalQuantity,
 		FreebiesCurrentQuantity:  freebie.FreebiesCurrentQuantity,
+		FreebiesStatus:           freebie.FreebiesStatus,
 		CreatedBy:                freebie.CreatedBy.String(),
 		CreatedAt:                freebie.CreatedAt.Unix(),
 		UpdatedBy:                freebie.UpdatedBy.String(),
 		UpdatedAt:                freebie.UpdatedAt.Unix(),
 	})
+
+	return response, nil
+}
+
+func (s *MoveTechAdminService) UpdateFreebies(ctx context.Context, req *pb.UpdateFreebiesRequest) (*pb.UpdateFreebiesResponse, error) {
+	// Retrieve existing FreebiesData from the database
+	var existingFreebiesData models.FreebiesData
+	if err := s.DB.First(&existingFreebiesData, "freebies_id = ?", req.GetFreebiesId()).First(&existingFreebiesData).Error; err != nil {
+		log.Printf("Error retrieving Freebies data: %v", err)
+		return nil, err
+	}
+
+	// Update the existing FreebiesData with new values if they are not nil
+	if req.FreebiesName != "" {
+		existingFreebiesData.FreebiesName = req.FreebiesName
+	}
+	if req.FreebiesImg != nil {
+		existingFreebiesData.FreebiesImg = req.FreebiesImg
+	}
+	if req.FreebiesStorePrice != 0 {
+		existingFreebiesData.FreebiesStorePrice = req.FreebiesStorePrice
+	}
+
+	// Save the updated data back to the database using GORM
+	if err := s.DB.Save(&existingFreebiesData).Error; err != nil {
+		log.Printf("Error updating Freebies data: %v", err)
+		return nil, err
+	}
+
+	// Create and return the response
+	response := &pb.UpdateFreebiesResponse{
+		FreebiesData: &pb.FreebiesData{
+			FreebiesId:               existingFreebiesData.GetFreebiesId().String(),
+			FreebiesName:             existingFreebiesData.GetFreebiesName(),
+			FreebiesImg:              []byte(existingFreebiesData.GetFreebiesImg()),
+			FreebiesStorePrice:       existingFreebiesData.GetFreebiesStorePrice(),
+			FreebiesOriginalQuantity: existingFreebiesData.GetFreebiesOriginalQuantity(),
+			FreebiesCurrentQuantity:  existingFreebiesData.GetFreebiesCurrentQuantity(),
+			FreebiesStatus:           existingFreebiesData.GetFreebiesStatus(),
+			CreatedBy:                existingFreebiesData.CreatedBy.String(),
+			CreatedAt:                existingFreebiesData.CreatedAt.Unix(),
+			UpdatedBy:                existingFreebiesData.UpdatedBy.String(),
+			UpdatedAt:                existingFreebiesData.UpdatedAt.Unix(),
+		},
+	}
+
+	return response, nil
+}
+
+func (s *MoveTechAdminService) UpdateFreebiesQuantity(ctx context.Context, req *pb.UpdateFreebiesQuantityRequest) (*pb.UpdateFreebiesQuantityResponse, error) {
+	// Retrieve existing FreebiesData from the database
+	var existingFreebiesData models.FreebiesData
+	if err := s.DB.First(&existingFreebiesData, "freebies_id = ?", req.GetFreebiesId()).First(&existingFreebiesData).Error; err != nil {
+		log.Printf("Error retrieving Freebies data: %v", err)
+		return nil, err
+	}
+
+	// Update the existing FreebiesData with new values if they are not nil
+	if req.FreebiesOriginalQuantity != 0 {
+		existingFreebiesData.FreebiesOriginalQuantity = req.FreebiesOriginalQuantity
+	}
+	if req.FreebiesCurrentQuantity != 0 {
+		existingFreebiesData.FreebiesCurrentQuantity = req.FreebiesCurrentQuantity
+	}
+
+	// Save the updated data back to the database using GORM
+	if err := s.DB.Save(&existingFreebiesData).Error; err != nil {
+		log.Printf("Error updating Freebies data: %v", err)
+		return nil, err
+	}
+
+	// Create and return the response
+	response := &pb.UpdateFreebiesQuantityResponse{
+		FreebiesData: &pb.FreebiesData{
+			FreebiesId:               existingFreebiesData.GetFreebiesId().String(),
+			FreebiesName:             existingFreebiesData.GetFreebiesName(),
+			FreebiesImg:              []byte(existingFreebiesData.GetFreebiesImg()),
+			FreebiesStorePrice:       existingFreebiesData.GetFreebiesStorePrice(),
+			FreebiesOriginalQuantity: existingFreebiesData.GetFreebiesOriginalQuantity(),
+			FreebiesCurrentQuantity:  existingFreebiesData.GetFreebiesCurrentQuantity(),
+			FreebiesStatus:           existingFreebiesData.GetFreebiesStatus(),
+			CreatedBy:                existingFreebiesData.CreatedBy.String(),
+			CreatedAt:                existingFreebiesData.CreatedAt.Unix(),
+			UpdatedBy:                existingFreebiesData.UpdatedBy.String(),
+			UpdatedAt:                existingFreebiesData.UpdatedAt.Unix(),
+		},
+	}
+
+	return response, nil
+}
+
+func (s *MoveTechAdminService) UpdateFreebiesStatus(ctx context.Context, req *pb.UpdateFreebiesStatusRequest) (*pb.UpdateFreebiesStatusResponse, error) {
+	// Retrieve existing FreebiesData from the database
+	var existingFreebiesData models.FreebiesData
+	if err := s.DB.First(&existingFreebiesData, "freebies_id = ?", req.GetFreebiesId()).First(&existingFreebiesData).Error; err != nil {
+		log.Printf("Error retrieving Freebies data: %v", err)
+		return nil, err
+	}
+
+	// Update the existing FreebiesData with new values if they are not nil
+	if req.FreebiesStatus != "" {
+		existingFreebiesData.FreebiesStatus = req.FreebiesStatus
+	}
+
+	// Save the updated data back to the database using GORM
+	if err := s.DB.Save(&existingFreebiesData).Error; err != nil {
+		log.Printf("Error updating Freebies data: %v", err)
+		return nil, err
+	}
+
+	// Create and return the response
+	response := &pb.UpdateFreebiesStatusResponse{
+		FreebiesData: &pb.FreebiesData{
+			FreebiesId:               existingFreebiesData.GetFreebiesId().String(),
+			FreebiesName:             existingFreebiesData.GetFreebiesName(),
+			FreebiesImg:              []byte(existingFreebiesData.GetFreebiesImg()),
+			FreebiesStorePrice:       existingFreebiesData.GetFreebiesStorePrice(),
+			FreebiesOriginalQuantity: existingFreebiesData.GetFreebiesOriginalQuantity(),
+			FreebiesCurrentQuantity:  existingFreebiesData.GetFreebiesCurrentQuantity(),
+			FreebiesStatus:           existingFreebiesData.GetFreebiesStatus(),
+			CreatedBy:                existingFreebiesData.CreatedBy.String(),
+			CreatedAt:                existingFreebiesData.CreatedAt.Unix(),
+			UpdatedBy:                existingFreebiesData.UpdatedBy.String(),
+			UpdatedAt:                existingFreebiesData.UpdatedAt.Unix(),
+		},
+	}
 
 	return response, nil
 }

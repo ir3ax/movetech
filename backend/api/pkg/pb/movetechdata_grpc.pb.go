@@ -26,6 +26,9 @@ type MoveTechAdminProtoServiceClient interface {
 	SaveFreebies(ctx context.Context, in *SaveFreebiesRequest, opts ...grpc.CallOption) (*SaveFreebiesResponse, error)
 	GetAllFreebies(ctx context.Context, in *GetAllFreebiesRequest, opts ...grpc.CallOption) (*GetAllFreebiesResponse, error)
 	GetAllFreebiesById(ctx context.Context, in *GetAllFreebiesRequestById, opts ...grpc.CallOption) (*GetAllFreebiesResponseById, error)
+	UpdateFreebies(ctx context.Context, in *UpdateFreebiesRequest, opts ...grpc.CallOption) (*UpdateFreebiesResponse, error)
+	UpdateFreebiesQuantity(ctx context.Context, in *UpdateFreebiesQuantityRequest, opts ...grpc.CallOption) (*UpdateFreebiesQuantityResponse, error)
+	UpdateFreebiesStatus(ctx context.Context, in *UpdateFreebiesStatusRequest, opts ...grpc.CallOption) (*UpdateFreebiesStatusResponse, error)
 }
 
 type moveTechAdminProtoServiceClient struct {
@@ -72,6 +75,33 @@ func (c *moveTechAdminProtoServiceClient) GetAllFreebiesById(ctx context.Context
 	return out, nil
 }
 
+func (c *moveTechAdminProtoServiceClient) UpdateFreebies(ctx context.Context, in *UpdateFreebiesRequest, opts ...grpc.CallOption) (*UpdateFreebiesResponse, error) {
+	out := new(UpdateFreebiesResponse)
+	err := c.cc.Invoke(ctx, "/api.MoveTechAdminProtoService/UpdateFreebies", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *moveTechAdminProtoServiceClient) UpdateFreebiesQuantity(ctx context.Context, in *UpdateFreebiesQuantityRequest, opts ...grpc.CallOption) (*UpdateFreebiesQuantityResponse, error) {
+	out := new(UpdateFreebiesQuantityResponse)
+	err := c.cc.Invoke(ctx, "/api.MoveTechAdminProtoService/UpdateFreebiesQuantity", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *moveTechAdminProtoServiceClient) UpdateFreebiesStatus(ctx context.Context, in *UpdateFreebiesStatusRequest, opts ...grpc.CallOption) (*UpdateFreebiesStatusResponse, error) {
+	out := new(UpdateFreebiesStatusResponse)
+	err := c.cc.Invoke(ctx, "/api.MoveTechAdminProtoService/UpdateFreebiesStatus", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MoveTechAdminProtoServiceServer is the server API for MoveTechAdminProtoService service.
 // All implementations must embed UnimplementedMoveTechAdminProtoServiceServer
 // for forward compatibility
@@ -80,6 +110,9 @@ type MoveTechAdminProtoServiceServer interface {
 	SaveFreebies(context.Context, *SaveFreebiesRequest) (*SaveFreebiesResponse, error)
 	GetAllFreebies(context.Context, *GetAllFreebiesRequest) (*GetAllFreebiesResponse, error)
 	GetAllFreebiesById(context.Context, *GetAllFreebiesRequestById) (*GetAllFreebiesResponseById, error)
+	UpdateFreebies(context.Context, *UpdateFreebiesRequest) (*UpdateFreebiesResponse, error)
+	UpdateFreebiesQuantity(context.Context, *UpdateFreebiesQuantityRequest) (*UpdateFreebiesQuantityResponse, error)
+	UpdateFreebiesStatus(context.Context, *UpdateFreebiesStatusRequest) (*UpdateFreebiesStatusResponse, error)
 	mustEmbedUnimplementedMoveTechAdminProtoServiceServer()
 }
 
@@ -98,6 +131,15 @@ func (UnimplementedMoveTechAdminProtoServiceServer) GetAllFreebies(context.Conte
 }
 func (UnimplementedMoveTechAdminProtoServiceServer) GetAllFreebiesById(context.Context, *GetAllFreebiesRequestById) (*GetAllFreebiesResponseById, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllFreebiesById not implemented")
+}
+func (UnimplementedMoveTechAdminProtoServiceServer) UpdateFreebies(context.Context, *UpdateFreebiesRequest) (*UpdateFreebiesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateFreebies not implemented")
+}
+func (UnimplementedMoveTechAdminProtoServiceServer) UpdateFreebiesQuantity(context.Context, *UpdateFreebiesQuantityRequest) (*UpdateFreebiesQuantityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateFreebiesQuantity not implemented")
+}
+func (UnimplementedMoveTechAdminProtoServiceServer) UpdateFreebiesStatus(context.Context, *UpdateFreebiesStatusRequest) (*UpdateFreebiesStatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateFreebiesStatus not implemented")
 }
 func (UnimplementedMoveTechAdminProtoServiceServer) mustEmbedUnimplementedMoveTechAdminProtoServiceServer() {
 }
@@ -185,6 +227,60 @@ func _MoveTechAdminProtoService_GetAllFreebiesById_Handler(srv interface{}, ctx 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MoveTechAdminProtoService_UpdateFreebies_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateFreebiesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MoveTechAdminProtoServiceServer).UpdateFreebies(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.MoveTechAdminProtoService/UpdateFreebies",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MoveTechAdminProtoServiceServer).UpdateFreebies(ctx, req.(*UpdateFreebiesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MoveTechAdminProtoService_UpdateFreebiesQuantity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateFreebiesQuantityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MoveTechAdminProtoServiceServer).UpdateFreebiesQuantity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.MoveTechAdminProtoService/UpdateFreebiesQuantity",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MoveTechAdminProtoServiceServer).UpdateFreebiesQuantity(ctx, req.(*UpdateFreebiesQuantityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MoveTechAdminProtoService_UpdateFreebiesStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateFreebiesStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MoveTechAdminProtoServiceServer).UpdateFreebiesStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.MoveTechAdminProtoService/UpdateFreebiesStatus",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MoveTechAdminProtoServiceServer).UpdateFreebiesStatus(ctx, req.(*UpdateFreebiesStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MoveTechAdminProtoService_ServiceDesc is the grpc.ServiceDesc for MoveTechAdminProtoService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -207,6 +303,18 @@ var MoveTechAdminProtoService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAllFreebiesById",
 			Handler:    _MoveTechAdminProtoService_GetAllFreebiesById_Handler,
+		},
+		{
+			MethodName: "UpdateFreebies",
+			Handler:    _MoveTechAdminProtoService_UpdateFreebies_Handler,
+		},
+		{
+			MethodName: "UpdateFreebiesQuantity",
+			Handler:    _MoveTechAdminProtoService_UpdateFreebiesQuantity_Handler,
+		},
+		{
+			MethodName: "UpdateFreebiesStatus",
+			Handler:    _MoveTechAdminProtoService_UpdateFreebiesStatus_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

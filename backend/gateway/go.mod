@@ -6,6 +6,7 @@ require (
 	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.8.2
 	github.com/go-playground/validator/v10 v10.11.1
+	github.com/google/uuid v1.3.0
 	github.com/oklog/ulid/v2 v2.1.0
 	github.com/spf13/viper v1.16.0
 	github.com/stvp/rollbar v0.5.1
