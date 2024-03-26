@@ -39,8 +39,6 @@ export const ModalViewUpdate = (props: Xprox) => {
     resolver: zodResolver(updateFreebiesRequest),
   });
 
-  const { isDirty } = freebiesFormUpdate.formState;
-
   const { mutate: updateFreebiesMU } = useMutation<
     UpdateFreebiesResponse,
     AxiosError,
@@ -67,38 +65,46 @@ export const ModalViewUpdate = (props: Xprox) => {
     updateFreebiesMU(params);
 };
 
-// console.log(freebiesFormUpdate.getValues())
-// if(freebiesFormUpdate.getValues('freebiesName') === props.freebiesName || freebiesFormUpdate.getValues('freebiesStorePrice') === props.freebiesStorePrice || freebiesFormUpdate.getValues('freebiesImg') === props.freebiesImg){
-//   console.log('qweqweqeqeqe')
-// }else{
-//   console.log('asdasdasdasd')
-// }
+const handleCloseUpdate = () => {
+  freebiesFormUpdate.reset();
+  props.handleClose()
+}
 
-    return (
-      <Modal open={props.isVisible} onClose={props.handleClose}>
-        <div className='flex flex-col justify-start w-[66rem] h-[36rem] bg-white p-8 overflow-auto'>
-              <button onClick={props.handleClose} className='flex justify-end items-end w-full'>
-                <IoIosClose  className='w-8 h-8 text-[#808080] cursor-pointer' />
-              </button>
-              <Form {...freebiesFormUpdate}>
-                <form onSubmit={freebiesFormUpdate.handleSubmit(handleUpdateFreebies)} className='mt-6 w-full h-full'>
-                <Stepper
-                      strokeColor='#17253975'
-                      fillStroke='#172539'
-                      activeColor='#172539'
-                      activeProgressBorder='2px solid #17253975'
-                      submitBtn={<button className={`stepperBtn ${!isDirty ? 'opacity-55' : null}`} disabled={!isDirty}>Submit</button>}
-                      continueBtn={<button className='stepperBtn'>Next</button>}
-                      backBtn={<button className='stepperBtn'>Back</button>}
-                      >
-                      <div className='stepperSubDiv'>
-                          <FreebiesModalUpdate freebiesId={props.freebiesId} freebiesName={props.freebiesName} freebiesImg={props.freebiesImg} freebiesStorePrice={props.freebiesStorePrice} />
-                      </div>
-                      </Stepper>
-                </form>
-              </Form>
-        </div>
-      </Modal>
-    )
+
+  return (
+    <Modal open={props.isVisible} onClose={handleCloseUpdate}>
+      <div className='flex flex-col justify-start w-[66rem] h-[36rem] bg-white p-8 overflow-auto'>
+            <button onClick={handleCloseUpdate} className='flex justify-end items-end w-full'>
+              <IoIosClose  className='w-8 h-8 text-[#808080] cursor-pointer' />
+            </button>
+            <Form {...freebiesFormUpdate}>
+              <form onSubmit={freebiesFormUpdate.handleSubmit(handleUpdateFreebies)} className='mt-6 w-full h-full'>
+              <Stepper
+                    strokeColor='#17253975'
+                    fillStroke='#172539'
+                    activeColor='#172539'
+                    activeProgressBorder='2px solid #17253975'
+                    submitBtn={<button className={`stepperBtn ${ 
+                      (freebiesFormUpdate.getValues('freebiesName') === props.freebiesName || freebiesFormUpdate.getValues('freebiesName') === '') && 
+                      (Number(freebiesFormUpdate.getValues('freebiesStorePrice')) === props.freebiesStorePrice || Number(freebiesFormUpdate.getValues('freebiesStorePrice')) === 0) &&
+                      (freebiesFormUpdate.getValues('freebiesImg') === props.freebiesImg || freebiesFormUpdate.getValues('freebiesImg') === '') ? 'opacity-55' : null}`}
+                      disabled={
+                      (freebiesFormUpdate.getValues('freebiesName') === props.freebiesName || freebiesFormUpdate.getValues('freebiesName') === '') && 
+                      (Number(freebiesFormUpdate.getValues('freebiesStorePrice')) === props.freebiesStorePrice || Number(freebiesFormUpdate.getValues('freebiesStorePrice')) === 0) &&
+                      (freebiesFormUpdate.getValues('freebiesImg') === props.freebiesImg || freebiesFormUpdate.getValues('freebiesImg') === '') ? true : false
+                      }
+                      >Submit</button>}
+                    continueBtn={<button className='stepperBtn'>Next</button>}
+                    backBtn={<button className='stepperBtn'>Back</button>}
+                    >
+                    <div className='stepperSubDiv'>
+                        <FreebiesModalUpdate freebiesId={props.freebiesId} freebiesName={props.freebiesName} freebiesImg={props.freebiesImg} freebiesStorePrice={props.freebiesStorePrice} />
+                    </div>
+                    </Stepper>
+              </form>
+            </Form>
+      </div>
+    </Modal>
+  )
 }
 

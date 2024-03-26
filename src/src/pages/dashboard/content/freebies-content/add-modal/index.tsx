@@ -33,6 +33,8 @@ export const ModalView = (props: Xprox) => {
     resolver: zodResolver(saveFreebiesRequest),
   });
 
+  const { isDirty } = freebiesForm.formState;
+
   const { mutate: saveFreebiesMu } = useMutation<
     SaveFreebiesResponse,
     AxiosError,
@@ -61,11 +63,15 @@ export const ModalView = (props: Xprox) => {
     saveFreebiesMu(params);
 };
 
+const handleCloseAdd = () => {
+  freebiesForm.reset();
+  props.handleClose()
+}
 
     return (
-      <Modal open={props.isVisible} onClose={props.handleClose}>
+      <Modal open={props.isVisible} onClose={handleCloseAdd}>
         <div className='flex flex-col justify-start w-[66rem] h-[36rem] bg-white p-8 overflow-auto'>
-              <button onClick={props.handleClose} className='flex justify-end items-end w-full'>
+              <button onClick={handleCloseAdd} className='flex justify-end items-end w-full'>
                 <IoIosClose  className='w-8 h-8 text-[#808080] cursor-pointer' />
               </button>
               <Form {...freebiesForm}>
@@ -75,7 +81,7 @@ export const ModalView = (props: Xprox) => {
                       fillStroke='#172539'
                       activeColor='#172539'
                       activeProgressBorder='2px solid #17253975'
-                      submitBtn={<button className='stepperBtn'>Submit</button>}
+                      submitBtn={<button className={`stepperBtn ${!isDirty ? 'opacity-55' : null}`} disabled={!isDirty}>Submit</button>}
                       continueBtn={<button className='stepperBtn'>Next</button>}
                       backBtn={<button className='stepperBtn'>Back</button>}
                       >

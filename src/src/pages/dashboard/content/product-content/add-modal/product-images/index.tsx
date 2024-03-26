@@ -5,7 +5,7 @@ import { IoCloseSharp } from 'react-icons/io5';
 export const ProductImages = () => {
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
-
+  
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files) {
@@ -30,9 +30,8 @@ export const ProductImages = () => {
     setSelectedImages(updatedSelectedImages);
   };
 
-  console.log(selectedImages)
   return (
-    <div className='w-full pb-8'> 
+    <div className='w-full pb-12'> 
       <div className='w-full  flex  justify-start items-start'>
         <h1 className='text-lg'>Product Images:</h1>
       </div>
@@ -52,10 +51,10 @@ export const ProductImages = () => {
           {imagePreviews.map((previewUrl, index) => (
             <div key={index} className='relative w-full h-full border border-[#63B38F]'>
               <button 
-                className='absolute top-1 right-1 rounded-full w-7 h-7 flex justify-center items-center text-lg font-medium text-black border-[#48ffac] border-2'
+                className='absolute top-1 right-1 rounded-full w-7 h-7 flex justify-center items-center text-lg font-medium text-black border-red-500 border-2'
                 onClick={() => handleRemoveImage(index)}
               >
-                <IoCloseSharp className='w-5 h-5 text-[#48ffac]' />
+                <IoCloseSharp className='w-5 h-5 text-red-500' />
               </button>
               <div className='w-full h-full flex justify-center items-center'>
                 <img className='w-[90%] h-[90%]' src={previewUrl} alt={`Preview ${index}`} />

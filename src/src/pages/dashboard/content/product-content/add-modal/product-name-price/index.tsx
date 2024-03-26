@@ -1,97 +1,299 @@
+import { useFormContext, useWatch } from 'react-hook-form';
 import { Input } from '../../../../../../components/input';
+import { FormControl, FormDescription, FormField, FormItem } from '../../../../../../components/ui/form';
+import { SaveProductRequest } from '../../../../../../service/product-service/schema';
+import { useEffect, useState } from 'react';
 
+const getCurrentQuantityFromLocalStorage = () => {
+  const storedValue = localStorage.getItem('currentQuantityValue');
+  return storedValue ? parseFloat(storedValue) : 0;
+};
 
 export const ProductName = () => {
-  
-    return (
-      <div className='w-full pb-8'> 
-      <div className='w-full  flex  justify-start items-start'>
-        <h1 className='text-lg'>Product Details:</h1>
-      </div>
-      <div className='w-full flex flex-col gap-6'>
-          <div className='w-full mt-6 row flex gap-6'>
-            <div className='w-full flex flex-col gap-2'>
-              <label>Product Name</label>
-              <Input 
-                className='focus-visible:ring-[#63B38F]' 
-                placeholder='Product Name'
-              />
-            </div>
-            <div className='w-full flex flex-col gap-2'>
-                  <label>Product Sold</label>
-                  <Input 
-                    className='focus-visible:ring-[#63B38F]' 
-                    placeholder='Product Sold'
-                    type='number'
-                  />
-            </div>
+
+  const productForm = useFormContext<SaveProductRequest>()
+  const [currentQuantityValue, setCurrentQuantityValue] = useState<number>(
+    getCurrentQuantityFromLocalStorage()
+  );
+
+  const originalPrice = useWatch({
+    control: productForm.control,
+    name: 'originalPrice',
+    defaultValue: 0,
+  });
+
+  const discount = useWatch({
+    control: productForm.control,
+    name: 'discount',
+    defaultValue: 0,
+  });
+
+  const [discountedPrice, setDiscountedPrice] = useState<number>(0);
+
+  useEffect(() => {
+    if (typeof originalPrice === 'string' && typeof discount === 'string') {
+      const originalPriceValue = parseFloat(originalPrice);
+      const discountValue = parseFloat(discount);
+      if (!isNaN(originalPriceValue) && !isNaN(discountValue)) {
+        const discountedPriceValue = originalPriceValue * (1 - discountValue / 100);
+        setDiscountedPrice(discountedPriceValue);
+      }
+    } else if (typeof originalPrice === 'string') {
+      const originalPriceValue = parseFloat(originalPrice);
+      if (!isNaN(originalPriceValue)) {
+        setDiscountedPrice(originalPriceValue);
+      }
+    }
+  }, [originalPrice, discount]);
+
+  useEffect(() => {
+    localStorage.setItem('currentQuantityValue', currentQuantityValue.toString());
+  }, [currentQuantityValue]);
+
+
+  return (
+    <div className='w-full pb-8'> 
+    <div className='w-full  flex  justify-start items-start'>
+      <h1 className='text-lg'>Product Details:</h1>
+    </div>
+    <div className='w-full flex flex-col gap-6'>
+        <div className='w-full mt-6 row flex gap-6'>
+          <div className='w-full flex flex-col gap-2'>
+            <label>Product Name</label>
+            <FormField
+              control={productForm.control}
+              name='imgName'
+              render={({ field, fieldState }) => (
+                  <FormItem className='col-span-full'>
+                      <FormControl>
+                      <Input 
+                        id='imgName'
+                        className='focus-visible:ring-[#63B38F]' 
+                        placeholder='Product Name'
+                        type='text'
+                        ref={field.ref}
+                        name={field.name}
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                        defaultValue={field.value}
+                      />
+                      </FormControl>
+                      <FormDescription className='text-red-500'>
+                          {fieldState.error?.message}
+                      </FormDescription>
+                  </FormItem>
+              )}
+            />
           </div>
-
-          <div className='w-full flex flex-col gap-4'>
-            <div className='w-full flex gap-6'>
-
-              <div className='w-full flex flex-col gap-2'>
-                <label>Supplier Price</label>
-                <Input 
-                  className='focus-visible:ring-[#63B38F]' 
-                  placeholder='Suppliers Price'
-                  type='number'
+          <div className='w-full flex flex-col gap-2'>
+                <label>Product Sold</label>
+                <FormField
+                  control={productForm.control}
+                  name='productSold'
+                  render={({ field, fieldState }) => (
+                      <FormItem className='col-span-full'>
+                          <FormControl>
+                          <Input 
+                            id='productSold'
+                            className='focus-visible:ring-[#63B38F]' 
+                            placeholder='Product Sold'
+                            type='number'
+                            ref={field.ref}
+                            name={field.name}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            defaultValue={field.value === 0 ? '' : field.value}
+                          />
+                          </FormControl>
+                          <FormDescription className='text-red-500'>
+                              {fieldState.error?.message}
+                          </FormDescription>
+                      </FormItem>
+                  )}
                 />
-              </div>
-              <div className='w-full flex flex-col gap-2'>
-                <label>Store Price (w/o discount)</label>
-                <Input 
-                  className='focus-visible:ring-[#63B38F]' 
-                  placeholder='Store Price'
-                  type='number'
-                />
-              </div>
-            </div>
-
-            <div className='w-full flex gap-6'>
-              <div className='w-full flex flex-col gap-2'>
-                <label>Discount</label>
-                <Input 
-                  className='focus-visible:ring-[#63B38F]' 
-                  placeholder='Discount'
-                  type='number'
-                />
-              </div>
-              <div className='w-full flex flex-col gap-2'>
-                <label>Discounted Price</label>
-                <Input 
-                  className='focus-visible:ring-[#63B38F] text-[#66fcb9]' 
-                  placeholder='Discounted Price'
-                  type='number'
-                  disabled={true}
-                  value={12}
-                />
-              </div>
-            </div>
-
-            <div className='w-full flex gap-6'>
-              <div className='w-full flex flex-col gap-2'>
-                <label>Original Quantity</label>
-                <Input 
-                  className='focus-visible:ring-[#63B38F]' 
-                  placeholder='Original Quantity'
-                  type='number'
-                />
-              </div>
-              <div className='w-full flex flex-col gap-2'>
-                <label>Current Quantity</label>
-                <Input 
-                  className='focus-visible:ring-[#63B38F] text-[#66fcb9]' 
-                  placeholder='Current Quantity'
-                  type='number'
-                  value={12}
-                  disabled={true}
-                />
-              </div>
-            </div>
-
           </div>
         </div>
+
+        <div className='w-full flex flex-col gap-4'>
+          <div className='w-full flex gap-6'>
+
+            <div className='w-full flex flex-col gap-2'>
+              <label>Supplier Price</label>
+              <FormField
+                  control={productForm.control}
+                  name='supplierPrice'
+                  render={({ field, fieldState }) => (
+                      <FormItem className='col-span-full'>
+                          <FormControl>
+                          <Input 
+                            id='supplierPrice'
+                            className='focus-visible:ring-[#63B38F]' 
+                            placeholder='Supplier Price'
+                            type='number'
+                            ref={field.ref}
+                            name={field.name}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            defaultValue={field.value === 0 ? '' : field.value}
+                          />
+                          </FormControl>
+                          <FormDescription className='text-red-500'>
+                              {fieldState.error?.message}
+                          </FormDescription>
+                      </FormItem>
+                  )}
+                />
+            </div>
+            <div className='w-full flex flex-col gap-2'>
+              <label>Original Price (w/o discount)</label>
+              <FormField
+                  control={productForm.control}
+                  name='originalPrice'
+                  render={({ field, fieldState }) => (
+                      <FormItem className='col-span-full'>
+                          <FormControl>
+                          <Input 
+                            id='originalPrice'
+                            className='focus-visible:ring-[#63B38F]' 
+                            placeholder='Original Price'
+                            type='number'
+                            ref={field.ref}
+                            name={field.name}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            defaultValue={field.value === 0 ? '' : field.value}
+                          />
+                          </FormControl>
+                          <FormDescription className='text-red-500'>
+                              {fieldState.error?.message}
+                          </FormDescription>
+                      </FormItem>
+                  )}
+                />
+            </div>
+          </div>
+
+          <div className='w-full flex gap-6'>
+            <div className='w-full flex flex-col gap-2'>
+              <label>Discount</label>
+              <FormField
+                  control={productForm.control}
+                  name='discount'
+                  render={({ field, fieldState }) => (
+                      <FormItem className='col-span-full'>
+                          <FormControl>
+                          <Input 
+                            id='discount'
+                            className='focus-visible:ring-[#63B38F]' 
+                            placeholder='Discount'
+                            type='number'
+                            ref={field.ref}
+                            name={field.name}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            defaultValue={field.value === 0 ? '' : field.value}
+                          />
+                          </FormControl>
+                          <FormDescription className='text-red-500'>
+                              {fieldState.error?.message}
+                          </FormDescription>
+                      </FormItem>
+                  )}
+                />
+            </div>
+            <div className='w-full flex flex-col gap-2'>
+              <label>Discounted Price</label>
+              <FormField
+                  control={productForm.control}
+                  name='discountedPrice'
+                  render={({ field, fieldState }) => (
+                      <FormItem className='col-span-full'>
+                          <FormControl>
+                          <Input 
+                            id='discoudiscountedPricent'
+                            className='focus-visible:ring-[#63B38F] text-[#66fcb9]' 
+                            placeholder='Discounted Price'
+                            type='number'
+                            ref={field.ref}
+                            name={field.name}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            value={discountedPrice.toFixed(2)}
+                            disabled
+                          />
+                          </FormControl>
+                          <FormDescription className='text-red-500'>
+                              {fieldState.error?.message}
+                          </FormDescription>
+                      </FormItem>
+                  )}
+                />
+            </div>
+          </div>
+
+          <div className='w-full flex gap-6'>
+            <div className='w-full flex flex-col gap-2'>
+              <label>Original Quantity</label>
+              <FormField
+                  control={productForm.control}
+                  name='originalQuantity'
+                  render={({ field, fieldState }) => (
+                      <FormItem className='col-span-full'>
+                          <FormControl>
+                          <Input 
+                            id='originalQuantity'
+                            className='focus-visible:ring-[#63B38F]' 
+                            placeholder='Original Quantity'
+                            type='number'
+                            ref={field.ref}
+                            name={field.name}
+                            onChange={(e) => {
+                              field.onChange(e.target.value),
+                              setCurrentQuantityValue(parseFloat(e.target.value))
+                            }}
+                            onBlur={field.onBlur}
+                            defaultValue={field.value === 0 ? '' : field.value}
+                          />
+                          </FormControl>
+                          <FormDescription className='text-red-500'>
+                              {fieldState.error?.message}
+                          </FormDescription>
+                      </FormItem>
+                  )}
+                />
+            </div>
+            <div className='w-full flex flex-col gap-2'>
+              <label>Current Quantity</label>
+              <FormField
+                  control={productForm.control}
+                  name='currentQuantity'
+                  render={({ field, fieldState }) => (
+                      <FormItem className='col-span-full'>
+                          <FormControl>
+                          <Input 
+                            id='currentQuantity'
+                            className='focus-visible:ring-[#63B38F] text-[#66fcb9]' 
+                            placeholder='Current Quantity'
+                            type='number'
+                            ref={field.ref}
+                            name={field.name}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            value={currentQuantityValue}
+                            disabled
+                          />
+                          </FormControl>
+                          <FormDescription className='text-red-500'>
+                              {fieldState.error?.message}
+                          </FormDescription>
+                      </FormItem>
+                  )}
+                />
+            </div>
+          </div>
+
+        </div>
       </div>
-    );
+    </div>
+  );
 }

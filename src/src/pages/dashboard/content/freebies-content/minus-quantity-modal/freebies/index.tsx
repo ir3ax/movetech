@@ -19,11 +19,12 @@ export const FreebiesModalUpdateQuantityMinus = (props: Freebie) => {
   const [updatedOriginalQuantityAtom, setUpdatedOriginalQuantityAtom] = useAtom(additionalOriginalQuantity);
   const [updatedCurrentQuantityAtom, setUpdatedCurrentQuantityAtom]  = useAtom(additionalCurrentQuantity);
 
-  // Calculate the updated quantities based on the additional quantity input3
+  // Calculate the updated quantities based on the additional quantity input
   useEffect(() => {
-    setUpdatedOriginalQuantityAtom(props.freebiesOriginalQuantity - additionalQuantity);
-    setUpdatedCurrentQuantityAtom(props.freebiesCurrentQuantity - additionalQuantity);
-  },[additionalQuantity])
+    const additionalQty = additionalQuantity || 0;
+    setUpdatedOriginalQuantityAtom(props.freebiesOriginalQuantity - additionalQty);
+    setUpdatedCurrentQuantityAtom(props.freebiesCurrentQuantity - additionalQty);
+  }, [additionalQuantity])
   
   // const { formState } = freebiesForm
   // const { isValid, isSubmitting } = formState

@@ -199,7 +199,7 @@ export const FreebiesContent = () => {
                                 freebiesData?.freebiesData.map((item, index) => (
                                     <div key={index} className='flex flex-col justify-center items-center border bg-white shadow-2xl shadow-gray-400'>
                                         <div className='w-full h-full flex flex-col justify-center items-center'>
-                                            <div className='relative w-full flex justify-center items-center bg-[#233857] p-6'>
+                                            <div className='relative w-full flex justify-center items-center bg-[#233857] p-6 rounded-t-md'>
                                             {item.freebiesImg ?
                                                 <img className='rounded-md w-32 h-32' src={`data:image/jpeg;base64,${item.freebiesImg}`} alt={item.freebiesName} />
                                                 :
