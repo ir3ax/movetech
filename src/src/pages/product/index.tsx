@@ -12,7 +12,7 @@ interface Review {
 interface ProductProps {
     productId: string;
     img: string | string[];
-    imgName: string;
+    productName: string;
     discount: string;
     originalPrice: number;
     discountedPrice: number;
@@ -26,7 +26,7 @@ interface ProductProps {
     productReviews: Review[];
 }
 
-export const ProductPage: React.FC<ProductProps> = ({ productId, img, imgName, discount, originalPrice, discountedPrice, description1, description2, originalQuantity, currentQuantity, productStatus, productSold, productFreebies, productReviews }) => {
+export const ProductPage: React.FC<ProductProps> = ({ productId, img, productName, discount, originalPrice, discountedPrice, description1, description2, originalQuantity, currentQuantity, productStatus, productSold, productFreebies, productReviews }) => {
 
     const navigate = useNavigate();
     const setProductDetailsData = useSetAtom(productDetailsAtom)
@@ -39,7 +39,7 @@ export const ProductPage: React.FC<ProductProps> = ({ productId, img, imgName, d
         setProductDetailsData({
             productId: productId,
             img: img,
-            imgName: imgName, 
+            productName: productName, 
             discount: discount,
             originalPrice: originalPrice,
             discountedPrice: discountedPrice,
@@ -69,9 +69,9 @@ export const ProductPage: React.FC<ProductProps> = ({ productId, img, imgName, d
                     {discount}
                 </span>
                 <div className='pb-12 flex justify-center items-center '>
-                    <img className='w-52 h-52' src={img[0]} alt={imgName}/>
+                    <img className='w-52 h-52' src={img[0]} alt={productName}/>
                 </div>
-                <span className='line-clamp-2'>{imgName}</span>
+                <span className='line-clamp-2'>{productName}</span>
                 <div className='mt-6 w-full h-full flex flex-col'>
                     <div className='flex flex-col justify-start items-start max-sm:justify-center max-sm:items-center gap-3'>
                         <StarRatings

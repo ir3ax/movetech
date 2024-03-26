@@ -1,8 +1,32 @@
 import z from 'zod';
 
+// Define a union type for productFreebies that can accept either string[], Freebie[], or a single string
+const productFreebiesType = z.union([
+    z.string(),
+    z.array(z.string()),
+    z.array(z.object({
+        freebiesId: z.string(),
+        freebiesName: z.string(),
+        freebiesStorePrice: z.number(),
+        freebiesOriginalQuantity: z.number(),
+        freebiesCurrentQuantity: z.number(),
+        freebiesImg: z.string(),
+    })),
+]);
+
+const imgType = z.union([
+    z.array(z.instanceof(File)),
+    z.array(z.string()),
+]);
+
+const description2Type = z.union([
+    z.string(),
+    z.array(z.string()),
+]);
+
 export const saveProductRequest = z.object({
-    imgName: z.string().nonempty({ message: 'Freebies name is required.'}).max(255, { message: 'Freebies name must be between 1 and 255 characters' }),
-    img: z.array(z.instanceof(File)).nullable(),
+    productName: z.string().nonempty({ message: 'Freebies name is required.'}).max(255, { message: 'Freebies name must be between 1 and 255 characters' }),
+    img: imgType.nullable().optional(),
     discount: z.string().transform((val) => {
         const parsedValue = parseFloat(val);
         if (isNaN(parsedValue)) {
@@ -26,7 +50,7 @@ export const saveProductRequest = z.object({
     }),
     discountedPrice: z.number(),
     description1: z.string().optional(),
-    description2: z.string().optional(),
+    description2: description2Type.nullable().optional(),
     originalQuantity: z.string().nonempty({ message: 'Freebies orginal quantity is required.'}).transform((val) => {
         const parsedValue = parseFloat(val);
         if (isNaN(parsedValue)) {
@@ -42,13 +66,13 @@ export const saveProductRequest = z.object({
         }
         return parsedValue;
     }),
-    productFreebies: z.string().optional(),
+    productFreebies: productFreebiesType.nullable().optional(),
 });
 
 export const saveProductResponse = z.object({
     ProductData: z.array(z.object({
         productId: z.string(),
-        imgName: z.string(),
+        productName: z.string(),
         img: z.string(),
         discount: z.number(),
         supplierPrice: z.number(),

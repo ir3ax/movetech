@@ -22,8 +22,8 @@ service MoveTechAdminProtoService {
 
 message ProductData {
     string productId = 1;
-    string imgName = 2;
-    string img = 3;
+    string productName = 2;
+    repeated bytes img = 3;
     double discount = 4;
     double supplierPrice = 5;
     double originalPrice = 6;
@@ -42,8 +42,8 @@ message ProductData {
 }
 
 message SaveProductRequest {
-    string imgName = 1;
-    string img = 2;
+    string productName = 1;
+    repeated bytes img = 2;
     double discount = 3;
     double supplierPrice = 4;
     double originalPrice = 5;

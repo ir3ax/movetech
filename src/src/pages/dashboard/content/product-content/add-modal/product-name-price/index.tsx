@@ -2,19 +2,15 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { Input } from '../../../../../../components/input';
 import { FormControl, FormDescription, FormField, FormItem } from '../../../../../../components/ui/form';
 import { SaveProductRequest } from '../../../../../../service/product-service/schema';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useAtom } from 'jotai';
+import { productCurrentQuantityAtom, productDiscountedPriceAtom } from '../../../../../../atom/productDetailsAtom';
 
-const getCurrentQuantityFromLocalStorage = () => {
-  const storedValue = localStorage.getItem('currentQuantityValue');
-  return storedValue ? parseFloat(storedValue) : 0;
-};
 
 export const ProductName = () => {
 
   const productForm = useFormContext<SaveProductRequest>()
-  const [currentQuantityValue, setCurrentQuantityValue] = useState<number>(
-    getCurrentQuantityFromLocalStorage()
-  );
+  const [currentQuantityValue, setCurrentQuantityValue] = useAtom(productCurrentQuantityAtom)
 
   const originalPrice = useWatch({
     control: productForm.control,
@@ -28,7 +24,7 @@ export const ProductName = () => {
     defaultValue: 0,
   });
 
-  const [discountedPrice, setDiscountedPrice] = useState<number>(0);
+  const [discountedPrice, setDiscountedPrice] = useAtom(productDiscountedPriceAtom);
 
   useEffect(() => {
     if (typeof originalPrice === 'string' && typeof discount === 'string') {
@@ -62,12 +58,12 @@ export const ProductName = () => {
             <label>Product Name</label>
             <FormField
               control={productForm.control}
-              name='imgName'
+              name='productName'
               render={({ field, fieldState }) => (
                   <FormItem className='col-span-full'>
                       <FormControl>
                       <Input 
-                        id='imgName'
+                        id='productName'
                         className='focus-visible:ring-[#63B38F]' 
                         placeholder='Product Name'
                         type='text'

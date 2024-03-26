@@ -12,6 +12,7 @@ func RegisterRoutes(r *gin.Engine, vi *viper.Viper) *MoveTechAdminProtoService {
 	svc := &MoveTechAdminProtoService{InitMoveTechAdminService(vi)}
 
 	movetechAdmin := r.Group("/admin")
+	movetechAdmin.POST("/product", gin.Bind(binding.SaveProductRequest{}), svc.SaveProduct)
 	movetechAdmin.POST("/freebies", gin.Bind(binding.SaveFreebiesRequest{}), svc.SaveFreebies)
 	movetechAdmin.GET("/freebies/:freebiesId", svc.GetAllFreebiesById)
 	movetechAdmin.GET("/freebies-sort/:sort", svc.GetAllFreebies)
@@ -20,6 +21,10 @@ func RegisterRoutes(r *gin.Engine, vi *viper.Viper) *MoveTechAdminProtoService {
 	movetechAdmin.PUT("/freebies-update-status", gin.Bind(binding.UpdateFreebiesStatusRequest{}), svc.UpdateFreebiesStatus)
 
 	return svc
+}
+
+func (svc *MoveTechAdminProtoService) SaveProduct(c *gin.Context) {
+	api.SaveProduct(c, svc.MoveTechAdminProtoServiceClient)
 }
 
 func (svc *MoveTechAdminProtoService) SaveFreebies(c *gin.Context) {

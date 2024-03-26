@@ -61,7 +61,7 @@ export const AppLayout = () => {
     const techStackData = [
         {
             "productId":"123e4567-e89b-12d3-a456-426655440001",
-            "imgName":"[Baak] Ticarto T-2648G Stainless Couple Watch",
+            "productName":"[Baak] Ticarto T-2648G Stainless Couple Watch",
             "img":[
                 "https://yelsewph.business/cdn/shop/products/new_couple_540x.jpg?v=1560926945",
                 "https://yelsewph.business/cdn/shop/products/ticarto_black_copy_540x.jpg?v=1560926945",
@@ -104,7 +104,7 @@ export const AppLayout = () => {
         },
         {
             "productId":"123e4567-e89b-12d3-a456-426655440002",
-            "imgName":"Fossil Machine Brown IP Watch - Men's Watches in Brown | Buckle",
+            "productName":"Fossil Machine Brown IP Watch - Men's Watches in Brown | Buckle",
             "img":"https://i.pinimg.com/originals/9e/c6/0d/9ec60de715b437d14c83facd96e84787.jpg",
             "discount":"50% OFF",
             "originalPrice": 1000,
@@ -131,7 +131,7 @@ export const AppLayout = () => {
         },
         {
             "productId":"123e4567-e89b-12d3-a456-426655440003",
-            "imgName":"FNGEEN Mechanical Luminous Automatic watch Blue",
+            "productName":"FNGEEN Mechanical Luminous Automatic watch Blue",
             "img":[
                 "https://yelsewph.business/cdn/shop/products/authentic_fngeen_blue_540x.jpg?v=1547268460",
                 "https://yelsewph.business/cdn/shop/products/FNGEEN_1_540x.jpg?v=1547268460",
@@ -162,7 +162,7 @@ export const AppLayout = () => {
         },
         {
             "productId":"123e4567-e89b-12d3-a456-426655440004",
-            "imgName":"OPK Wrist Watch for Men Stainless Steel Strap 8108",
+            "productName":"OPK Wrist Watch for Men Stainless Steel Strap 8108",
             "img":[
                 "https://cf.shopee.ph/file/1ed3b1dbd5777c9453541ecd41983a5b",
                 "https://down-ph.img.susercontent.com/file/cn-11134207-7r98o-lp8retfdp61je4",
@@ -220,7 +220,7 @@ export const AppLayout = () => {
         },
         {
             "productId":"123e4567-e89b-12d3-a456-426655440005",
-            "imgName":"Casio EFR-539SG-7AVU Edifice Series Men's Watch",
+            "productName":"Casio EFR-539SG-7AVU Edifice Series Men's Watch",
             "img":"https://th.bing.com/th/id/R.719fa89633e9e013d378c3737dcd5833?rik=5yVt7sdOPo7gxQ&riu=http%3a%2f%2fwatchcentre.pk%2fwp-content%2fuploads%2f2016%2f11%2fCasio-Edifice-EFR-539SG-7AV.jpg&ehk=%2fu4CWbTFvr0hGxPJ0peS4DWiosAWJddV0QwwzTbGI%2fg%3d&risl=&pid=ImgRaw&r=0",
             "discount":"35% OFF",
             "originalPrice": 1750,
@@ -247,7 +247,7 @@ export const AppLayout = () => {
         },
         {
             "productId":"123e4567-e89b-12d3-a456-426655440006",
-            "imgName":"TAG HEUER FORMULA 1 CHRONOGRAPH QUARTZ 43MM",
+            "productName":"TAG HEUER FORMULA 1 CHRONOGRAPH QUARTZ 43MM",
             "img":"https://sunlab.com.mt/wp-content/uploads/2021/03/CAZ1011.BA0843.jpg",
             "discount":"25% OFF",
             "originalPrice": 2550,
@@ -301,7 +301,7 @@ export const AppLayout = () => {
                                 <div key={key}>
                                     <ProductPage
                                         productId={product.productId}
-                                        imgName={product.imgName}
+                                        productName={product.productName}
                                         img={Array.isArray(product.img) ? product.img : [product.img]}
                                         discount={product.discount}
                                         originalPrice={product.originalPrice}

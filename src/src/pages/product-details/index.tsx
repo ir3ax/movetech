@@ -5,7 +5,7 @@ import Footer from "../../components/appLayout/footer";
 import StarRatings from "react-star-ratings";
 import { cartDetailsAtom } from "../../atom/cartDetailsAtom";
 import { CartProduct, FetchCartDetails } from "../../service/cart/schema";
-import { useEffect, useState } from "react";
+import { Key, JSXElementConstructor, ReactElement, ReactNode, SetStateAction, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
@@ -33,7 +33,7 @@ export const ProductDetails = () => {
         const newProducts: CartProduct[] = [
           {
             productId: productDetailsValue?.productId,
-            productName: productDetailsValue?.imgName,
+            productName: productDetailsValue?.productName,
             productImg: productDetailsValue?.img[0],
             discount: productDetailsValue?.discount,
             rating: productDetailsValue?.productRating,
@@ -94,24 +94,24 @@ export const ProductDetails = () => {
                 <div className='flex justify-center items-center gap-8 max-sm:flex-col'>
                     <div className='flex flex-1 justify-end items-end gap-4 max-sm:flex-col-reverse max-sm:mr-12 max-sm:ml-12 max-sm:justify-center max-sm:items-center'>  
                         <div className='flex flex-col flex-1 justify-end items-end gap-4 w-full h-[80dvh] max-sm:flex-row'>
-                            {(Array.isArray(productDetailsValue?.img) ? productDetailsValue.img : [productDetailsValue?.img]).map((image, index) => (
+                            {(Array.isArray(productDetailsValue?.img) ? productDetailsValue.img : [productDetailsValue?.img]).map((image: string | undefined, index: Key | null | undefined) => (
                                 <button
                                     key={index}
                                     className={`max-sm:w-28 max-sm:h-28 flex justify-center items-center w-32 h-32 border rounded-md p-2 hover:border-[#1796CC] active:border-[#1796CC] focus:active:border-[#1796CC] ${index >= (productDetailsValue?.currentQuantity || 0) ? 'hidden' : ''}`}
                                     onClick={() => handleImageSwap(index)}
                                 >
-                                    <img className='w-24 h-24 max-sm:w-20 max-sm:h-20' src={image} alt={productDetailsValue?.imgName} />
+                                    <img className='w-24 h-24 max-sm:w-20 max-sm:h-20' src={image} alt={productDetailsValue?.productName} />
                                 </button>
                             ))}
                         </div>
                         <div className='flex flex-1 justify-center items-center w-full h-[80dvh] p-16 border rounded-md max-sm:p-6'>
-                            <img src={productDetailsValue?.img?.[currentImageIndex]} alt={productDetailsValue?.imgName} />
+                            <img src={productDetailsValue?.img?.[currentImageIndex]} alt={productDetailsValue?.productName} />
                         </div>            
                     </div>
                     <div className='flex flex-1 justify-start items-start max-sm:justify-center max-sm:items-center'>
                         <div className='flex flex-col justify-start items-start w-full h-[80dvh] max-h-[85dvh] overflow-y-auto'>
                             <div className='max-w-[90%] flex gap-4 max-sm:flex-col max-sm:justify-center max-sm:items-center max-sm:text-center max-sm:max-w-[100%]'>
-                                <h1 className='font-normal text-2xl pt-2 max-sm:text-lg lg:text-lg line-clamp-2'>{productDetailsValue?.imgName}</h1>
+                                <h1 className='font-normal text-2xl pt-2 max-sm:text-lg lg:text-lg line-clamp-2'>{productDetailsValue?.productName}</h1>
                                 <p className='2xl:w-[20%] xl:w-[20%] w-[20%] lg:w-[30%] max-sm:w-[40%] flex justify-center items-center text-2xl bg-[#cebebe] pl-4 pr-4 pt-2 pb-2 rounded-md font-medium max-sm:text-lg lg:text-lg lg:pl-2 lg:pr-2'>{productDetailsValue?.discount}</p>
                             </div>
                             <span className='h-[2px] w-[80%] bg-slate-700 mt-4 border-b border-slate-700 max-sm:w-[100%] lg:w-[90%]' />
@@ -163,7 +163,7 @@ export const ProductDetails = () => {
                                 <div className='grid 2xl:grid-cols-4 lg:grid-cols-3 gap-6 max-sm:grid-cols-2 max-sm:p-4 max-sm:max-h-[50dvh] max-sm:overflow-auto'>
                                 {
                                     Array.isArray(productDetailsValue?.productFreebies) &&
-                                    productDetailsValue.productFreebies.map((freebiesSet, index) => (
+                                    productDetailsValue.productFreebies.map((freebiesSet: { productId: any; freebiesName: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | SetStateAction<null> | undefined; freebiesImg: string | undefined; }, index: number) => (
                                         <div key={freebiesSet?.productId ?? index} className="flex flex-col items-center border p-4 rounded-sm text-center gap-2">
                                         <label
                                             htmlFor={`default-radio-${freebiesSet?.productId ?? index}`}

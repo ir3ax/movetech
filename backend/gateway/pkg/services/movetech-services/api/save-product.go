@@ -12,8 +12,8 @@ func SaveProduct(c *gin.Context, s pb.MoveTechAdminProtoServiceClient) {
 	productDetails := c.MustGet(gin.BindKey).(*binding.SaveProductRequest)
 
 	productDetailsRes, err := s.SaveProduct(c, &pb.SaveProductRequest{
-		ImgName:          productDetails.ImgName,
-		Img:              string(productDetails.Img),
+		ProductName:      productDetails.ProductName,
+		Img:              productDetails.Img,
 		Discount:         productDetails.Discount,
 		SupplierPrice:    productDetails.SupplierPrice,
 		OriginalPrice:    productDetails.OriginalPrice,
@@ -22,9 +22,9 @@ func SaveProduct(c *gin.Context, s pb.MoveTechAdminProtoServiceClient) {
 		Description2:     string(productDetails.Description2),
 		OriginalQuantity: productDetails.OriginalQuantity,
 		CurrentQuantity:  productDetails.CurrentQuantity,
-		ProductStatus:    productDetails.ProductStatus,
+		ProductStatus:    "ACT",
 		ProductSold:      productDetails.ProductSold,
-		ProductFreebies:  productDetails.ProductFreebies,
+		ProductFreebies:  string(productDetails.ProductFreebies),
 	})
 
 	if err != nil {

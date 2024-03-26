@@ -1,6 +1,7 @@
 package models
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"time"
 
@@ -10,8 +11,8 @@ import (
 
 type ProductData struct {
 	ProductId        uuid.UUID       `gorm:"type:uuid;primaryKey;default:uuid_generate_v4()"`
-	ImgName          string          `gorm:"type:text"`
-	Img              json.RawMessage `gorm:"type:jsonb"`
+	ProductName      string          `gorm:"type:text"`
+	Img              [][]byte        `gorm:"type:bytea"`
 	Discount         float64         `gorm:"type:decimal(10, 2);"`
 	SupplierPrice    float64         `gorm:"type:decimal(10, 2);"`
 	OriginalPrice    float64         `gorm:"type:decimal(10, 2);"`
@@ -41,16 +42,20 @@ func (p ProductData) GetProductId() uuid.UUID {
 	return p.ProductId
 }
 
-func (p ProductData) GetImgName() string {
-	if p.ImgName == "" {
+func (p ProductData) GetProductName() string {
+	if p.ProductName == "" {
 		return ""
 	}
 
-	return p.ImgName
+	return p.ProductName
 }
 
-func (p ProductData) GetImg() json.RawMessage {
-	return p.Img
+func (p ProductData) GetImg() []string {
+	var images []string
+	for _, imgBytes := range p.Img {
+		images = append(images, base64.StdEncoding.EncodeToString(imgBytes))
+	}
+	return images
 }
 
 func (p ProductData) GetDiscount() float64 {

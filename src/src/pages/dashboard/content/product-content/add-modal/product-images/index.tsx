@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { IoMdCloudDownload } from "react-icons/io";
 import { IoCloseSharp } from 'react-icons/io5';
+import { SaveProductRequest } from '../../../../../../service/product-service/schema';
+import { Input } from '../../../../../../components/input';
+import { FormField, FormItem, FormControl, FormDescription } from '../../../../../../components/ui/form';
+import { productImgAtom } from '../../../../../../atom/productDetailsAtom';
+import { useAtom } from 'jotai';
 
 export const ProductImages = () => {
-  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const productForm = useFormContext<SaveProductRequest>()
+  const [selectedImages, setSelectedImages] = useAtom(productImgAtom);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +50,35 @@ export const ProductImages = () => {
                 <h4 className='text-base font-semibold text-gray-50'>Upload a file</h4>
                 <span className='text-sm text-gray-400'>Max 2 MO</span>
             </div>
-            <input type='file' multiple id='doc' name='doc' accept='png, jpg, jpeg' hidden onChange={handleImageChange}/>
+            <FormField
+                    control={productForm.control}
+                    name='img'
+                    render={({ field, fieldState }) => (
+                        <FormItem className='col-span-full'>
+                            <FormControl>
+                            <Input 
+                              id='doc'
+                              className='focus-visible:ring-[#63B38F] hidden' 
+                              type='file'
+                              accept='png, jpg, jpeg'
+                              multiple
+                              ref={field.ref}
+                              name={field.name}
+                              onChange={(e) => {
+                                handleImageChange(e);
+                                if (e.target.files && e.target.files.length > 0) {
+                                    field.onChange(e.target.files[0]);
+                                }
+                            }}
+                              onBlur={field.onBlur}
+                            />
+                            </FormControl>
+                            <FormDescription className='text-red-500'>
+                                {fieldState.error?.message}
+                            </FormDescription>
+                        </FormItem>
+                    )}
+                  />
           </label>
         </div>
         <div className='grid 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-4 w-full h-full gap-4'>
@@ -51,6 +86,7 @@ export const ProductImages = () => {
           {imagePreviews.map((previewUrl, index) => (
             <div key={index} className='relative w-full h-full border border-[#63B38F]'>
               <button 
+                type='button'
                 className='absolute top-1 right-1 rounded-full w-7 h-7 flex justify-center items-center text-lg font-medium text-black border-red-500 border-2'
                 onClick={() => handleRemoveImage(index)}
               >

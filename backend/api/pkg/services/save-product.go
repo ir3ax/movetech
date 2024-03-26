@@ -20,12 +20,6 @@ func InitMoveTechService(db *gorm.DB) *MoveTechAdminService {
 }
 
 func (s *MoveTechAdminService) SaveProduct(ctx context.Context, req *pb.SaveProductRequest) (*pb.SaveProductResponse, error) {
-	// Decode the CSV file content from the request
-	img, err := json.Marshal(req.Img)
-	if err != nil {
-		log.Printf("Error marshaling img: %v", err)
-		return nil, err
-	}
 
 	descrip2, err := json.Marshal(req.Description2)
 	if err != nil {
@@ -35,14 +29,14 @@ func (s *MoveTechAdminService) SaveProduct(ctx context.Context, req *pb.SaveProd
 
 	productFreebies, err := json.Marshal(req.ProductFreebies)
 	if err != nil {
-		log.Printf("Error marshaling productFreebies: %v", err)
+		log.Printf("Error marshaling descrip2: %v", err)
 		return nil, err
 	}
 
 	// Create a new PDFExtractorData instance
 	productData := models.ProductData{
-		ImgName:          req.ImgName,
-		Img:              json.RawMessage(img),
+		ProductName:      req.ProductName,
+		Img:              req.Img,
 		Discount:         req.Discount,
 		SupplierPrice:    req.SupplierPrice,
 		OriginalPrice:    req.OriginalPrice,
@@ -65,8 +59,8 @@ func (s *MoveTechAdminService) SaveProduct(ctx context.Context, req *pb.SaveProd
 	// Create and return the response
 	response := &pb.SaveProductResponse{
 		ProductData: &pb.ProductData{
-			ImgName:          productData.ImgName,
-			Img:              string(productData.Img),
+			ProductName:      productData.ProductName,
+			Img:              productData.Img,
 			Discount:         productData.Discount,
 			OriginalPrice:    productData.OriginalPrice,
 			DiscountedPrice:  productData.DiscountedPrice,

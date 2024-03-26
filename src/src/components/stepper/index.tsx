@@ -160,11 +160,12 @@ const Stepper = (props: StepperProps) => {
           >
             {active > 1 ? (
               backBtn ? (
-                <span onClick={previousStep} style={{ marginRight: '20px' }}>
+                <button type='button' onClick={previousStep} style={{ marginRight: '20px' }}>
                   {backBtn}
-                </span>
+                </button>
               ) : (
                 <button
+                  type='button'
                   className={'defaultBtn'}
                   onClick={previousStep}
                   style={{ marginRight: '20px' }}
@@ -177,9 +178,9 @@ const Stepper = (props: StepperProps) => {
             )}
             {active < (children as React.ReactElement[]).length ? (
               continueBtn ? (
-                <span onClick={() => nextStep()}>{continueBtn}</span>
+                <button type='button' onClick={() => nextStep()}>{continueBtn}</button>
               ) : (
-                <button className={'defaultBtn'} onClick={() => nextStep()}>
+                <button type='button' className={'defaultBtn'} onClick={() => nextStep()}>
                   Continue
                 </button>
               )

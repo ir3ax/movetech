@@ -2,18 +2,11 @@ import { useState } from 'react';
 import { IoIosAdd, IoMdClose } from 'react-icons/io';
 import { useQuery } from 'react-query';
 import { getAllFreebies } from '../../../../../../service/freebies';
-
-interface Freebie {
-  freebiesId: string;
-  freebiesName: string;
-  freebiesStorePrice: number;
-  freebiesOriginalQuantity: number;
-  freebiesCurrentQuantity: number;
-  freebiesImg: string;
-}
+import { useAtom } from 'jotai';
+import { productFreebiesAtom } from '../../../../../../atom/productDetailsAtom';
 
 export const ProductFreebies = () => {
-  const [freebies, setFreebies] = useState<Freebie[]>([]);
+  const [freebies, setFreebies] = useAtom(productFreebiesAtom);
   const [selectedFreebieId, setSelectedFreebieId] = useState<string>('');
   const [sortOption] = useState('ATOZ');
 
@@ -63,19 +56,20 @@ export const ProductFreebies = () => {
           ))}
         </select>
         <button 
+          type='button'
           className='w-[5%] h-[40px] p-2 border border-[#63B38F] rounded-md flex justify-center items-center cursor-pointer hover:bg-[#bdfce0]'
           onClick={handleAddButtonClick}
         >
           <IoIosAdd className='w-6 h-6' />
         </button> 
       </div>
-      <div className='mt-6 flex flex-1 bg-[#172539] border border-[#63B38F] min-h-[50dvh] max-h-[50dvh] shadow-inner shadow-[#63B38F] px-4 py-4 overflow-auto'>
+      <div className='mt-6 flex flex-1 bg-[#172539] border border-[#63B38F] min-h-[50dvh] max-h-[50dvh] px-4 py-4 overflow-auto'>
         {/* Display added freebies */}
         <ul className='w-full flex flex-col gap-4'>
             {freebies.map((freebie, index) => (
               <li className='w-full flex border border-dashed p-4 relative rounded-md' key={index}>
                 <div className='flex flex-col flex-1 justify-center items-start gap-2 mt-2'>
-                  <p className='text-gray-300'><span className='font-extrabold text-lg text-white'>Code:</span> {freebie.freebiesId}</p>
+                  <p className='text-gray-300'><span className='font-extrabold text-lg text-white'>Id:</span> {freebie.freebiesId}</p>
                   <p className='text-gray-300'><span className='font-extrabold text-lg text-white'>Name:</span> {freebie.freebiesName}</p>
                   <p className='text-gray-300'><span className='font-extrabold text-lg text-white'>Store Price:</span> {freebie.freebiesStorePrice.toFixed(2)}</p>
                   <p className='text-gray-300'><span className='font-extrabold text-lg text-white'>Orignal Quantity:</span> {freebie.freebiesOriginalQuantity}</p>
@@ -87,6 +81,7 @@ export const ProductFreebies = () => {
                     <img src={`data:image/jpeg;base64,${freebie.freebiesImg}`} alt={freebie.freebiesName} className='w-32 h-32 rounded-lg' />
                   )}
                   <button
+                        type='button'
                         className='text-red-500 absolute top-1 right-1'
                         onClick={() => handleRemoveFreebie(index)}
                       >
